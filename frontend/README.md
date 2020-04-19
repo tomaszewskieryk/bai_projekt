@@ -1,4 +1,4 @@
-# bai_project
+# bai_project FRONTEND
 
 ## Project setup
 ```
