@@ -1,4 +1,4 @@
-DROP DATABASE shoppinglist;
+DROP DATABASE IF EXISTS shoppinglist;
 CREATE DATABASE shoppinglist;
 USE shoppinglist;
 
@@ -57,22 +57,22 @@ INSERT INTO user (nickname, email, password) VALUES ('izs95', 'izab.sta@gmail.co
 INSERT INTO user (nickname, email, password) VALUES ('super_rafik', 'lewicki_r@wp.pl', '$2a$04$02xjZD12dXSWD2fNCbDgu.j17CNYbBsmdxyqKA34KmNMgxseCo2.i');
 INSERT INTO user (nickname, email, password) VALUES ('test', 'test@gmail.com', '$2a$04$cGFcZSEuyVg/bSUeWHbV4.MQOgX/2FeHPRa6A9rF4g/24nljp9Qm6');
 
-INSERT INTO fridgeState (fridgeName, isActual, userID) VALUES ('rodzinna', true, 1)
-INSERT INTO fridgeState (fridgeName, isActual, userID) VALUES ('imprezowa', true, 2)
-INSERT INTO fridgeState (fridgeName, isActual, userID) VALUES ('codzienna', true, 3)
+INSERT INTO fridgeState (fridgeName, isActual, userID) VALUES ('rodzinna', true, 1);
+INSERT INTO fridgeState (fridgeName, isActual, userID) VALUES ('imprezowa', true, 2);
+INSERT INTO fridgeState (fridgeName, isActual, userID) VALUES ('codzienna', true, 3);
 
-INSERT INTO productState (productID, amount) VALUES (1, 4)
-INSERT INTO productState (productID, amount) VALUES (2, 5)
-INSERT INTO productState (productID, amount) VALUES (3, 6)
+INSERT INTO productState (productID, amount) VALUES (1, 4);
+INSERT INTO productState (productID, amount) VALUES (2, 5);
+INSERT INTO productState (productID, amount) VALUES (3, 6);
 
-INSERT INTO unit (unitName) VALUES (kg)
-INSERT INTO unit (unitName) VALUES (szt.)
-INSERT INTO unit (unitName) VALUES (l)
+INSERT INTO unit (unitName) VALUES ('kg');
+INSERT INTO unit (unitName) VALUES ('szt.');
+INSERT INTO unit (unitName) VALUES ('l');
 
-INSERT INTO product (unitID, productName, price) VALUES (1, 'pomidory', 5,33)
-INSERT INTO product (unitID, productName, price) VALUES (2, 'herbatniki', 2,99)
-INSERT INTO product (unitID, productName, price) VALUES (3, 'woda gazowana', 1,39)
+INSERT INTO product (unitID, productName, price) VALUES (1, 'pomidory', 5.33);
+INSERT INTO product (unitID, productName, price) VALUES (2, 'herbatniki', 2.99);
+INSERT INTO product (unitID, productName, price) VALUES (3, 'woda gazowana', 1.39);
 
-INSERT INTO productList (productID, amount) VALUES (1, 3)
-INSERT INTO productList (productID, amount) VALUES (2, 5)
-INSERT INTO productList (productID, amount) VALUES (3, 7)
+INSERT INTO productList (productID, amount) VALUES (1, 3);
+INSERT INTO productList (productID, amount) VALUES (2, 5);
+INSERT INTO productList (productID, amount) VALUES (3, 7);
