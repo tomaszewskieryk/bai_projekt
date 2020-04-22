@@ -3,6 +3,6 @@
 <mapper namespace="com.example.myshopper.repository.TestRepository">
 
     <select id="testSelect" resultType="String">
-        select nickname from users where email = 'eryk@wp.pl'
+        select nickname from users where email = 'lewicki_r@wp.pl'
     </select>
 </mapper>
