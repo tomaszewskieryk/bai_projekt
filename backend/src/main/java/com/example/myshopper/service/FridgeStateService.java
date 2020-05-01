@@ -1,6 +1,7 @@
 package com.example.myshopper.service;
 
 import com.example.myshopper.repository.FridgeStateRepository;
+import com.example.myshopper.repository.model.FridgeStateEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,9 @@ public class FridgeStateService {
     }
 
     public void createFridgeStateForNewUser(int userID) {
-        int fridgeStateID = fridgeStateRepository.saveFridgeStateForNewUser(userID);
+        FridgeStateEntity fridgeStateEntity = new FridgeStateEntity("actualState", true, userID);
+
+        int fridgeStateID = fridgeStateRepository.saveFridgeStateForNewUser(fridgeStateEntity);
         log.info("Created fridge state with id = " + fridgeStateID);
     }
 }

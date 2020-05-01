@@ -1,24 +1,22 @@
-package com.example.myshopper.model;
+package com.example.myshopper.repository.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FridgeState {
+public class FridgeStateEntity {
 
     private int fridgeStateID;
     private String fridgeName;
     private boolean isActual;
-    private List<CountedProduct> products = new ArrayList<>();
+    private int userID;
 
-    public FridgeState(String fridgeName, boolean isActual) {
+    public FridgeStateEntity(String fridgeName, boolean isActual, int userID) {
         this.fridgeName = fridgeName;
         this.isActual = isActual;
+        this.userID = userID;
     }
 }

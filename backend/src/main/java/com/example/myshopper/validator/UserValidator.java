@@ -39,5 +39,4 @@ public class UserValidator {
             throw new InputException("User with that email already exists!");
         }
     }
-
 }
