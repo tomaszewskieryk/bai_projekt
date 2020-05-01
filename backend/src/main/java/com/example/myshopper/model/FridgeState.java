@@ -9,11 +9,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class FridgeState {
 
-    private int userID;
-    private String nickname;
-    private String email;
-    private String password;
-    private List<FridgeState> fridgeStateList;
+    private int fridgeStateID;
+    private String fridgeName;
+    private boolean isActual;
+    private List<CountedProduct> products;
+
 }
