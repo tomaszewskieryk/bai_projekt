@@ -17,7 +17,7 @@
       </b-form-group>
 
       <b-form-group id="input-group-2" label="Nazwa użytkownika:" label-for="input-2">
-        <b-form-input id="input-2" v-model="form.name" required placeholder="Wprowadź nazwę użytkownika"></b-form-input>
+        <b-form-input id="input-2" v-model="form.nickname" required placeholder="Wprowadź nazwę użytkownika"></b-form-input>
       </b-form-group>
 
       <b-form-group id="input-group-2" label="Hasło:" label-for="input-3">
@@ -41,7 +41,7 @@ export default {
     return {
       form: {
         email: "",
-        name: "",
+        nickname: "",
         password: ""
       }
     };

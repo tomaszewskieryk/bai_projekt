@@ -10,7 +10,7 @@
       >
         <b-form-input
           id="input-1"
-          v-model="form.email"
+          v-model="form.username"
           type="email"
           required
           placeholder="Wprowadź email"
@@ -37,8 +37,7 @@ export default {
   data() {
     return {
       form: {
-        email: "",
-        name: "",
+        username: "",
         password: ""
       }
     };

@@ -1,0 +1,6 @@
+com\example\myshopper\MyShopperApplication.class
+com\example\myshopper\repository\UserRepository.class
+com\example\myshopper\WebSecurityConfig.class
+com\example\myshopper\controller\TestController.class
+com\example\myshopper\service\UserService.class
+com\example\myshopper\model\User.class
