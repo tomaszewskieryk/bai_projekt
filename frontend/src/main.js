@@ -13,12 +13,15 @@ import { faHome, faSignInAlt, faUserPlus } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueToastr2 from 'vue-toastr-2';
 import 'vue-toastr-2/dist/vue-toastr-2.min.css';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 window.toastr = require('toastr');
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(VueToastr2);
+Vue.use(VueAxios, axios);
 
 //font awesome icons
 library.add(faHome, faSignInAlt, faUserPlus);
