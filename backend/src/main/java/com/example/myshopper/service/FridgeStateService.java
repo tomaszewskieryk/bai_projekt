@@ -1,7 +1,5 @@
 package com.example.myshopper.service;
 
-import com.example.myshopper.model.FridgeState;
-import com.example.myshopper.model.User;
 import com.example.myshopper.repository.FridgeStateRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

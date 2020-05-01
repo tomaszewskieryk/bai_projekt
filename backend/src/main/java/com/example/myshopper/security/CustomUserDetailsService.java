@@ -1,7 +1,6 @@
 package com.example.myshopper.security;
 
 import com.example.myshopper.model.User;
-import com.example.myshopper.repository.UserRepository;
 import com.example.myshopper.service.UserService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
