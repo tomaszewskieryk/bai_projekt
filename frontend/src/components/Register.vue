@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import toast from '../resources/toast'
+
 export default {
   data() {
     return {
@@ -57,9 +59,11 @@ export default {
           password: this.form.password
         })
         .then(function(response) {
+          toast.success(response);
           console.log(response);
         })
         .catch(function(error) {
+          toast.error(error);
           console.log(error);
         });
     }

@@ -11,6 +11,7 @@ C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\m
 C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\myshopper\model\User.java
 C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\myshopper\controller\LoginController.java
 C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\myshopper\exception\CustomExceptionHandler.java
+C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\myshopper\security\CorsConfiguration.java
 C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\myshopper\MyShopperApplication.java
 C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\myshopper\repository\FridgeStateRepository.java
 C:\Users\mxsgb5\Desktop\Projekty\bai_projekt\backend\src\main\java\com\example\myshopper\repository\TestRepository.java

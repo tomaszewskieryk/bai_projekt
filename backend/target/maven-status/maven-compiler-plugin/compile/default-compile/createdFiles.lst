@@ -3,6 +3,7 @@ com\example\myshopper\security\WebSecurityConfig.class
 com\example\myshopper\service\FridgeStateService.class
 com\example\myshopper\service\UserService.class
 com\example\myshopper\MyShopperApplication.class
+com\example\myshopper\security\CorsConfiguration.class
 com\example\myshopper\exception\InputException.class
 com\example\myshopper\repository\TestRepository.class
 com\example\myshopper\security\CustomUserDetailsService.class
@@ -18,3 +19,4 @@ com\example\myshopper\repository\FridgeStateRepository.class
 com\example\myshopper\repository\UserRepository.class
 com\example\myshopper\controller\LoginController.class
 com\example\myshopper\model\FridgeState.class
+com\example\myshopper\security\CorsConfiguration$1.class
