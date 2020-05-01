@@ -17,11 +17,19 @@ public class UserRepository {
 
 
     public User getUserByEmail(String email) {
-        return null;
+        return sqlSession.selectOne("getUserByEmail", email);
     }
-
 
     public User getTestUser() {
         return sqlSession.selectOne("testUserSelect");
+    }
+
+    public int createUser(User user) {
+        sqlSession.insert("createNewUser", user);
+        return user.getUserID();
+    }
+
+    public User getUserByNickname(String nickname) {
+        return sqlSession.selectOne("getUserByNickname", nickname);
     }
 }

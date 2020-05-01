@@ -17,12 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(UserService userService, UserRepository userRepository) {
+    public CustomUserDetailsService(UserService userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
     }
 
     @Transactional(readOnly = true)
@@ -30,8 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         User user = null;
         try {
-//            user = userService.getUserByEmail(email);
-            user = userRepository.getTestUser();
+            user = userService.getUserByEmail(email);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
