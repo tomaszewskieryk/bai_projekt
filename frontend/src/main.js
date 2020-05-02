@@ -14,6 +14,7 @@ import { faHome, faSignInAlt, faUserPlus, faBook } from '@fortawesome/free-solid
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import vSelect from "vue-select";
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
@@ -24,6 +25,7 @@ library.add(faHome, faSignInAlt, faUserPlus, faBook);
 
 Vue.component('navbar', NavBar);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
+Vue.component("v-select", vSelect);
 
 const routes = [
     {path: '/register', component: Register},
