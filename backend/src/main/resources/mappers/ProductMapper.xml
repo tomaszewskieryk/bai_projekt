@@ -29,4 +29,17 @@
         </foreach>
     </select>
 
+    <insert id="createProductEntity" useGeneratedKeys="true">
+        insert into products (unit, product_name, price)
+        values (#{unit},#{productName},#{price})
+        <selectKey resultType="Integer" keyProperty="productID" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+
+    <insert id="createProductStateEntity">
+        insert into product_fridge_state (fridge_state_id, product_id, amount)
+        values (#{fridgeStateID},#{productID},#{amount})
+    </insert>
+
 </mapper>

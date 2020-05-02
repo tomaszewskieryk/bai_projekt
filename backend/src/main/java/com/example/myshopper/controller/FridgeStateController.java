@@ -1,11 +1,12 @@
 package com.example.myshopper.controller;
 
-import com.example.myshopper.model.CountedProduct;
 import com.example.myshopper.model.FridgeState;
 import com.example.myshopper.service.FridgeStateService;
 import com.example.myshopper.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
 public class FridgeStateController {
@@ -27,10 +28,5 @@ public class FridgeStateController {
     @GetMapping("/fridgeState/actual/{userID}")
     public FridgeState getActualFridgeStateByUserID(@PathVariable int userID) {
         return fridgeStateService.getActualFridgeStateByUserID(userID);
-    }
-
-    @PostMapping("/fridgeState/{fridgeStateID}")
-    public void addProductToFridgeState(@PathVariable int fridgeStateID, @RequestBody CountedProduct product) {
-//        return fridgeStateService.getActualFridgeStateByUserID(fridgeStateID);
     }
 }

@@ -82,4 +82,38 @@ public class ProductService {
     private CountedProduct createCountedProduct(Map<String, Integer> productsAmountMap, Product product) {
         return new CountedProduct(product, productsAmountMap.get(String.valueOf(product.getProductID())));
     }
+
+    public void updateProduct(CountedProduct product) {
+
+    }
+
+    public void createProductForFridgeState(int fridgeStateID, CountedProduct product) {
+        ProductEntity productEntity = transformToProductEntity(product);
+        int productID = productRepository.saveNewProductEntity(productEntity);
+
+        ProductStateEntity productStateEntity = ProductStateEntity.builder()
+                .fridgeStateID(fridgeStateID)
+                .productID(productID)
+                .amount(product.getAmount())
+                .build();
+
+        productRepository.saveNewProductStateEntity(productStateEntity);
+    }
+
+    private ProductEntity transformToProductEntity(CountedProduct product) {
+        return ProductEntity.builder()
+                .productID(product.getProductID())
+                .price(product.getPrice())
+                .productName(product.getProductName())
+                .unit(product.getUnit().toString())
+                .build();
+    }
+
+    private ProductStateEntity transformToProductStateEntity(int fridgeStateID, CountedProduct product) {
+        return ProductStateEntity.builder()
+                .fridgeStateID(fridgeStateID)
+                .productID(product.getProductID())
+                .amount(product.getAmount())
+                .build();
+    }
 }
