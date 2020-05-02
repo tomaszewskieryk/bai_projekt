@@ -53,7 +53,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("*");
+                        .allowedOrigins("*")
+                        .allowedMethods("*");
             }
         };
     }
@@ -82,11 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
                 .accessDeniedHandler(getAccessDeniedHandler())
                 .authenticationEntryPoint(getAuthenticationEntryPoint());
-//
-//        http
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-//                .enableSessionUrlRewriting(true);
+
     }
 
     private AuthenticationEntryPoint getAuthenticationEntryPoint() {
