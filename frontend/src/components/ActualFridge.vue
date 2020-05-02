@@ -1,16 +1,16 @@
 <template>
-  <div>
+  <div class="main">
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Nazwa</th>
-          <th scope="col">Ilość</th>
-          <th scope="col">Akcja</th>
+          <th>Nazwa</th>
+          <th>Ilość</th>
+          <th>Akcja</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="product in fridge.products" :key="product.product.productName">
-          <td>{{product.product.productName}}</td>
+        <tr v-for="product in fridge.products" :key="product.productName">
+          <td>{{product.productName}}</td>
           <td>{{product.amount}}</td>
           <td>
             <b-button variant="light" v-b-modal.modal-1 @click="setProduct(product)">Edytuj</b-button>
@@ -26,7 +26,7 @@
       </tbody>
     </table>
 
-    <b-modal id="modal-1" hide-footer title="Produkt">
+    <b-modal ref="my-modal" id="modal-1" hide-footer title="Produkt">
       <form>
         <div class="form-group">
           <label for="exampleInputEmail1">Nazwa produktu</label>
@@ -42,9 +42,10 @@
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Jednostka</label>
-          <v-select :options="units" v-model="product.unit"></v-select>
+          <v-select :clearable="false" :options="units" v-model="product.unit"></v-select>
         </div>
-        <button type="button" @click="save()" class="btn btn-success">Zapisz</button>
+        <button type="button" @click="saveProduct()" v-b-modal.modal-1 class="btn btn-success">Zapisz</button>
+        <button type="button" v-if="product.productID != 0" @click="deleteProduct()" v-b-modal.modal-1 class="btn btn-danger delete">Usuń</button>
       </form>
     </b-modal>
   </div>
@@ -78,14 +79,13 @@ export default {
     getFridge() {
       this.axios
         .get(
-          `http://localhost:8100/fridgeState/${localStorage.getItem("user")}`
+          `http://localhost:8100/users/${localStorage.getItem("user")}/actualfridge`
         )
         .then(response => {
           this.fridge = response.data;
-          toast.success(response, "Sukces");
         })
-        .catch(function(error) {
-          toast.error(error, "Błąd");
+        .catch(function() {
+          toast.error("Nie udało się pobrać stanu lodówki", "Błąd");
         });
     },
     setProduct(product) {
@@ -96,33 +96,33 @@ export default {
         this.product.price = 0;
         this.product.amount = 0;
       } else {
-        this.product.productName = product.product.productName;
-        this.product.productID = product.product.productID;
-        this.product.unit = product.product.unit;
-        this.product.price = product.product.price;
+        this.product.productName = product.productName;
+        this.product.productID = product.productID;
+        this.product.unit = product.unit;
+        this.product.price = product.price;
         this.product.amount = product.amount;
       }
     },
-    save() {
+    saveProduct() {
       if (this.product.productID == 0) {
-        console.log(this.fridge)
         this.axios
-          .post(`http://localhost:8100/product/${this.fridge.fridgeStateID}`, {
+          .post(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products`, {
             productName: this.product.productName,
             unit: this.product.unit,
             price: this.product.price,
             amount: this.product.amount
           })
           .then(() => {
+            this.$refs['my-modal'].hide();
             toast.success("Dodano produkt", "Sukces");
             this.getFridge();
           })
-          .catch(function(error) {
-            toast.error(error, "Błąd");
+          .catch(function() {
+            toast.error("Nie udało się dodać produktu", "Błąd");
           });
       } else {
         this.axios
-          .put(`http://localhost:8100/product`, {
+          .put(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products`, {
             productName: this.product.productName,
             productID: this.product.productID,
             unit: this.product.unit,
@@ -130,35 +130,63 @@ export default {
             amount: this.product.amount
           })
           .then(() => {
+            this.$refs['my-modal'].hide();
             toast.success("Edycja pomyślna", "Sukces");
             this.getFridge();
           })
-          .catch(function(error) {
-            toast.error(error, "Błąd");
+          .catch(function() {
+            toast.error("Nie udało się zedytować produktu", "Błąd");
           });
       }
+    },
+    deleteProduct() {
+        this.axios
+          .post(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products/${this.product.productID}`, {
+            productName: this.product.productName,
+            unit: this.product.unit,
+            price: this.product.price,
+            amount: this.product.amount
+          })
+          .then(() => {
+            this.$refs['my-modal'].hide();
+            toast.success("Usunięto produkt", "Sukces");
+            this.getFridge();
+          })
+          .catch(function() {
+            toast.error("Nie udało się usunąć produktu", "Błąd");
+          });
     }
   }
 };
 </script>
 
 <style scoped>
-/* @media (min-width: 1000px) {
-  .form {
-    width: 40%;
+ th {
+   text-align: center;
+ }
+ td {
+   text-align: center;
+ }
+ .delete {
+   clear: both;
+   float: right;
+ }
+@media (min-width: 1000px) {
+  .main {
+    width: 60%;
     margin: auto;
   }
 }
 @media (min-width: 800px) and (max-width: 999px) {
-  .form {
-    width: 55%;
+  .main {
+    width: 70%;
     margin: auto;
   }
 }
 @media (min-width: 600px) and (max-width: 799px) {
-  .form {
-    width: 70%;
+  .main {
+    width: 80%;
     margin: auto;
   }
-} */
+}
 </style>

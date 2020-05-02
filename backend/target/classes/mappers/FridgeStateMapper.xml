@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress ALL -->
 <mapper namespace="com.example.myshopper.repository.FridgeStateRepository">
 
     <resultMap id="fridgeStateResult" type="com.example.myshopper.repository.model.FridgeStateEntity">
-        <id column="fs.fridge_state_id" property="fridgeStateID"/>
-        <result column="fs.fridge_name" property="nickname"/>
-        <result column="fs.actual" property="email"/>
-        <result column="fs.password" property="password"/>
-        <result column="fs.user_id" property="userID"/>
+        <id column="fridge_state_id" property="fridgeStateID"/>
+        <result column="fridge_name" property="fridgeName"/>
+        <result column="actual" property="isActual"/>
+        <result column="user_id" property="userID"/>
     </resultMap>
 
     <insert id="createFridgeStateForNewUser" useGeneratedKeys="true">
@@ -19,8 +19,19 @@
     </insert>
 
     <select id="getFridgeStateByID" parameterType="int" resultMap="fridgeStateResult">
-        select * from fridge_states fs
-        where fs.fridge_state_id = #{fridgeStateID}
+        select * from fridge_states
+        where fridge_state_id = #{fridgeStateID}
+    </select>
+
+    <select id="getActualFridgeStateByUserID" parameterType="int" resultMap="fridgeStateResult">
+        select * from fridge_states
+        where user_id = #{userID}
+        and   actual = '1'
+    </select>
+
+    <select id="getFridgeStatesByUserID" parameterType="int" resultMap="fridgeStateResult">
+        select * from fridge_states
+        where user_id = #{userID}
     </select>
 
 </mapper>
