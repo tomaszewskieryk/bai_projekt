@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="main">
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">Nazwa</th>
-          <th scope="col">Ilość</th>
-          <th scope="col">Akcja</th>
+          <th>Nazwa</th>
+          <th>Ilość</th>
+          <th>Akcja</th>
         </tr>
       </thead>
       <tbody>
@@ -42,7 +42,7 @@
         </div>
         <div class="form-group">
           <label for="exampleInputEmail1">Jednostka</label>
-          <v-select :options="units" v-model="product.unit"></v-select>
+          <v-select :clearable="false" :options="units" v-model="product.unit"></v-select>
         </div>
         <button type="button" @click="save()" v-b-modal.modal-1 class="btn btn-success">Zapisz</button>
       </form>
@@ -143,22 +143,28 @@ export default {
 </script>
 
 <style scoped>
-/* @media (min-width: 1000px) {
-  .form {
-    width: 40%;
+ th {
+   text-align: center;
+ }
+ td {
+   text-align: center;
+ }
+@media (min-width: 1000px) {
+  .main {
+    width: 60%;
     margin: auto;
   }
 }
 @media (min-width: 800px) and (max-width: 999px) {
-  .form {
-    width: 55%;
+  .main {
+    width: 70%;
     margin: auto;
   }
 }
 @media (min-width: 600px) and (max-width: 799px) {
-  .form {
-    width: 70%;
+  .main {
+    width: 80%;
     margin: auto;
   }
-} */
+}
 </style>
