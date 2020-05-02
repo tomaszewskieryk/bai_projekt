@@ -45,6 +45,7 @@
           <v-select :clearable="false" :options="units" v-model="product.unit"></v-select>
         </div>
         <button type="button" @click="save()" v-b-modal.modal-1 class="btn btn-success">Zapisz</button>
+        <button type="button" v-if="product.productID != 0" @click="delete()" v-b-modal.modal-1 class="btn btn-danger delete">Usuń</button>
       </form>
     </b-modal>
   </div>
@@ -78,13 +79,13 @@ export default {
     getFridge() {
       this.axios
         .get(
-          `http://localhost:8100/fridgeState/${localStorage.getItem("user")}`
+          `http://localhost:8100/users/${localStorage.getItem("user")}/actualfridge`
         )
         .then(response => {
           this.fridge = response.data;
         })
-        .catch(function(error) {
-          toast.error(error, "Błąd");
+        .catch(function() {
+          toast.error("Nie udało się pobrać stanu lodówki", "Błąd");
         });
     },
     setProduct(product) {
@@ -105,7 +106,7 @@ export default {
     save() {
       if (this.product.productID == 0) {
         this.axios
-          .post(`http://localhost:8100/product/${this.fridge.fridgeStateID}`, {
+          .post(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products`, {
             productName: this.product.productName,
             unit: this.product.unit,
             price: this.product.price,
@@ -116,12 +117,12 @@ export default {
             toast.success("Dodano produkt", "Sukces");
             this.getFridge();
           })
-          .catch(function(error) {
-            toast.error(error, "Błąd");
+          .catch(function() {
+            toast.error("Nie udało się dodać produktu", "Błąd");
           });
       } else {
         this.axios
-          .put(`http://localhost:8100/product/${this.fridge.fridgeStateID}`, {
+          .put(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products`, {
             productName: this.product.productName,
             productID: this.product.productID,
             unit: this.product.unit,
@@ -133,10 +134,27 @@ export default {
             toast.success("Edycja pomyślna", "Sukces");
             this.getFridge();
           })
-          .catch(function(error) {
-            toast.error(error, "Błąd");
+          .catch(function() {
+            toast.error("Nie udało się zedytować produktu", "Błąd");
           });
       }
+    },
+    delete() {
+        this.axios
+          .post(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products/${this.product.productID}`, {
+            productName: this.product.productName,
+            unit: this.product.unit,
+            price: this.product.price,
+            amount: this.product.amount
+          })
+          .then(() => {
+            this.$refs['my-modal'].hide();
+            toast.success("Usunięto produkt", "Sukces");
+            this.getFridge();
+          })
+          .catch(function() {
+            toast.error("Nie udało się usunąć produktu", "Błąd");
+          });
     }
   }
 };
@@ -148,6 +166,10 @@ export default {
  }
  td {
    text-align: center;
+ }
+ .delete {
+   clear: both;
+   float: right;
  }
 @media (min-width: 1000px) {
   .main {
