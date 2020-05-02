@@ -121,7 +121,7 @@ export default {
           });
       } else {
         this.axios
-          .put(`http://localhost:8100/product`, {
+          .put(`http://localhost:8100/product/${this.fridge.fridgeStateID}`, {
             productName: this.product.productName,
             productID: this.product.productID,
             unit: this.product.unit,
