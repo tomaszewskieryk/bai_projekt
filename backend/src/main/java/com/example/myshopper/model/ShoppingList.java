@@ -11,5 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ShoppingList {
 
+    private String name;
     List<CountedProduct> products;
 }

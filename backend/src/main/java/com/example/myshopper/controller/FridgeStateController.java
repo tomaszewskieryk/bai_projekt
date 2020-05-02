@@ -20,13 +20,18 @@ public class FridgeStateController {
         this.userService = userService;
     }
 
-    @GetMapping("/fridgeState/{fridgeStateID}")
+    @GetMapping("/fridges/{fridgeStateID}")
     public FridgeState getFridgeStateByID(@PathVariable int fridgeStateID) {
         return fridgeStateService.getFridgeStateByID(fridgeStateID);
     }
 
-    @GetMapping("/fridgeState/actual/{userID}")
+    @GetMapping("/users/{userID}/actualfridge")
     public FridgeState getActualFridgeStateByUserID(@PathVariable int userID) {
         return fridgeStateService.getActualFridgeStateByUserID(userID);
+    }
+
+    @GetMapping("/users/{userID}/fridges")
+    public FridgeState getNotActualFridgesStateByUserID(@PathVariable int userID) {
+        return null;
     }
 }

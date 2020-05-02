@@ -6,7 +6,9 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ProductRepository {
@@ -16,6 +18,13 @@ public class ProductRepository {
 
     private static final String CREATE_PRODUCT_ENTITY = "createProductEntity";
     private static final String CREATE_PRODUCT_STATE_ENTITY = "createProductStateEntity";
+
+    private static final String UPDATE_PRODUCT_STATE_ENTITY = "updateProductStateEntity";
+    private static final String UPDATE_PRODUCT_ENTITY = "updateProductEntity";
+
+    private static final String DELETE_PRODUCT_ENTITY = "deleteProductEntity";
+    private static final String DELETE_PRODUCT_STATE_ENTITY = "deleteProductStateEntity";
+    private static final String DELETE_PRODUCT_STATE_ENTITIES = "deleteProductStateEntities";
 
     private final SqlSession sqlSession;
 
@@ -28,16 +37,40 @@ public class ProductRepository {
         return sqlSession.selectList(PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID, fridgeStateID);
     }
 
-    public List<ProductEntity> getProductsByIds(List<Integer> productIDs) {
+    public List<ProductEntity> getProductListByIDs(List<Integer> productIDs) {
         return sqlSession.<ProductEntity>selectList(PRODUCT_LIST_BY_IDS, productIDs);
     }
 
-    public int saveNewProductEntity(ProductEntity product) {
+    public int createProductEntity(ProductEntity product) {
         sqlSession.insert(CREATE_PRODUCT_ENTITY, product);
         return product.getProductID();
     }
 
     public void saveNewProductStateEntity(ProductStateEntity productStateEntity) {
         sqlSession.insert(CREATE_PRODUCT_STATE_ENTITY, productStateEntity);
+    }
+
+    public void updateProductStateEntity(ProductStateEntity productStateEntity) {
+        sqlSession.update(UPDATE_PRODUCT_STATE_ENTITY, productStateEntity);
+    }
+
+    public void updateProductEntity(ProductEntity productEntity) {
+        sqlSession.update(UPDATE_PRODUCT_ENTITY, productEntity);
+    }
+
+    public void deleteProductEntity(int productID) {
+        sqlSession.delete(DELETE_PRODUCT_ENTITY, productID);
+    }
+
+    public void deleteProductStateEntity(int fridgeStateID, int productID) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("fridgeStateID", fridgeStateID);
+        params.put("productID", productID);
+
+        sqlSession.delete(DELETE_PRODUCT_STATE_ENTITY, params);
+    }
+
+    public void deleteAllProductStateEntities(int productID) {
+        sqlSession.delete(DELETE_PRODUCT_STATE_ENTITIES, productID);
     }
 }

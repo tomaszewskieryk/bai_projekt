@@ -15,13 +15,18 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @PostMapping("/product/{fridgeStateID}")
+    @PostMapping("/fridges/{fridgeStateID}/products")
     public void addProductToFridgeState(@PathVariable int fridgeStateID, @RequestBody CountedProduct product) {
         productService.createProductForFridgeState(fridgeStateID, product);
     }
 
-    @PutMapping("/product}")
-    public void updateProduct(@RequestBody CountedProduct product) {
-        productService.updateProduct(product);
+    @PutMapping("/fridges/{fridgeStateID}/products")
+    public void updateProduct(@PathVariable int fridgeStateID, @RequestBody CountedProduct product) {
+        productService.updateProduct(product, fridgeStateID);
+    }
+
+    @DeleteMapping("/fridges/{fridgeStateID}/products/{productID}")
+    public void deleteProduct(@PathVariable int fridgeStateID, @PathVariable int productID){
+        productService.deleteProductFromFridge(fridgeStateID, productID);
     }
 }

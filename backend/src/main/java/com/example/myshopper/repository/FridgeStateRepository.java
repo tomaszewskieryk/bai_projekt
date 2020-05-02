@@ -15,6 +15,7 @@ public class FridgeStateRepository {
     private static final String GET_STATE_BY_ID = "getFridgeStateByID";
     private static final String GET_STATES_BY_USER_ID = "getFridgeStatesByUserID";
     private static final String GET_ACTUAL_STATE_BY_USER_ID = "getActualFridgeStateByUserID";
+    private static final String GET_IS_ACTUAL_BY_STATE_ID = "getIsActualByStateId";
 
     private final SqlSession sqlSession;
 
@@ -32,11 +33,15 @@ public class FridgeStateRepository {
         return Optional.ofNullable(sqlSession.selectOne(GET_STATE_BY_ID, fridgeStateID));
     }
 
-    public List<FridgeStateEntity> getFridgeStatesEntityByUserID(int userID) {
+    public List<FridgeStateEntity> getFridgeStatesEntitiesByUserID(int userID) {
         return sqlSession.selectList(GET_STATES_BY_USER_ID, userID);
     }
 
     public Optional<FridgeStateEntity> getActualFridgeStateEntityByUserID(int userID) {
         return Optional.ofNullable(sqlSession.selectOne(GET_ACTUAL_STATE_BY_USER_ID, userID));
+    }
+
+    public Optional<Boolean> getFridgeIsActual(int fridgeStateID) {
+        return Optional.ofNullable(sqlSession.selectOne(GET_IS_ACTUAL_BY_STATE_ID, fridgeStateID));
     }
 }
