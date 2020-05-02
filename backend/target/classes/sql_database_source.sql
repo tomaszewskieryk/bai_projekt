@@ -25,7 +25,8 @@ CREATE TABLE products (
 );
 
 CREATE TABLE shopping_lists (
-    shopping_list_id  INT PRIMARY KEY AUTO_INCREMENT
+    shopping_list_id  INT PRIMARY KEY AUTO_INCREMENT,
+    name              VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE product_fridge_state (
@@ -33,7 +34,7 @@ CREATE TABLE product_fridge_state (
   product_id       INT,
   amount           INT,
   CONSTRAINT pk_product_fridge_state PRIMARY KEY (fridge_state_id, product_id),
-  CONSTRAINT fk_fridge_state FOREIGN KEY (fridge_state_id) REFERENCES fridge_states (fridge_state_id),
+  CONSTRAINT fk_fridge_state PRIMARY KEY (fridge_state_id) REFERENCES fridge_states (fridge_state_id),
   CONSTRAINT fk_product_fridge_state FOREIGN KEY (product_id) REFERENCES products (product_id)
 );
 
@@ -54,16 +55,16 @@ INSERT INTO shoppinglist.users (user_id, nickname, email, password) VALUES (2, '
 # password: "password"
 INSERT INTO shoppinglist.users (user_id, nickname, email, password) VALUES (3, 'Iza', 'iza@test.com', '$2a$10$NQooyYqpYY0FqxZ54tYlZO.EQRZ0434cJF4.hkBh2oZwZeFjtrhyW');
 
-INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (1, 'actual', true, 1);
+INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (1, 'aktualna', true, 1);
 INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (2, 'imprezowa', false, 1);
-INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (3, 'actual', true, 2);
-INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (4, 'actual', true, 3);
+INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (3, 'aktualna', true, 2);
+INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (4, 'aktualna', true, 3);
 
 INSERT INTO products (product_id, unit, product_name, price) VALUES (1, 'kg', 'pomidory', 5.33);
 INSERT INTO products (product_id, unit, product_name, price) VALUES (2, 'p', 'herbatniki', 2.99);
 INSERT INTO products (product_id, unit, product_name, price) VALUES (3, 'p', 'woda gazowana', 1.39);
 
-INSERT INTO shopping_lists (shopping_list_id) VALUES (1);
+INSERT INTO shopping_lists (shopping_list_id) VALUES (1, 'imprezowa shopping list');
 
 INSERT INTO product_fridge_state (fridge_state_id, product_id, amount) VALUES (1, 1, 4);
 INSERT INTO product_fridge_state (fridge_state_id, product_id, amount) VALUES (1, 2, 5);

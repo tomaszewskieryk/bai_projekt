@@ -12,7 +12,7 @@
 
     <insert id="createFridgeStateForNewUser" useGeneratedKeys="true">
         insert into fridge_states (fridge_name, actual, user_id)
-        values ('actual', true, #{userID})
+        values ('aktualna', true, #{userID})
         <selectKey resultType="Integer" keyProperty="fridgeStateID" order="AFTER">
             SELECT LAST_INSERT_ID();
         </selectKey>
@@ -32,6 +32,11 @@
     <select id="getFridgeStatesByUserID" parameterType="int" resultMap="fridgeStateResult">
         select * from fridge_states
         where user_id = #{userID}
+    </select>
+
+    <select id="getIsActualByStateId" parameterType="int" resultType="boolean">
+        select actual from fridge_states
+        where fridge_state_id = #{fridgeStateID}
     </select>
 
 </mapper>
