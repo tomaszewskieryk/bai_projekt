@@ -19,5 +19,5 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private List<FridgeState> fridgeStateList = new ArrayList<>();
-    private ShoppingList shoppingList;
+    private List<ShoppingList> shoppingLists = new ArrayList<>();
 }

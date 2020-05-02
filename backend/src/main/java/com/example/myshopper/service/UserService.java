@@ -45,4 +45,8 @@ public class UserService {
         userMati.getFridgeStateList().add(fridgeStateService.getFridgeStateByID(1));
         return userMati;
     }
+
+    public User getSimpleCurrentUser(String email) {
+        return getUserByEmail(email);
+    }
 }

@@ -68,8 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/register",
                         "/index",
                         "/test",
-                        "/fullUser",
-                        "/*",
+                        "/**",
                         "/testBadRequest",
                         "/testServerError",
                         "/favicon.ico")
@@ -83,6 +82,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.exceptionHandling()
                 .accessDeniedHandler(getAccessDeniedHandler())
                 .authenticationEntryPoint(getAuthenticationEntryPoint());
+//
+//        http
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+//                .enableSessionUrlRewriting(true);
     }
 
     private AuthenticationEntryPoint getAuthenticationEntryPoint() {
@@ -96,6 +100,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return (httpServletRequest, httpServletResponse, authentication) -> {
             httpServletResponse.getWriter().append("OK");
             httpServletResponse.setStatus(HttpStatus.OK.value());
+            httpServletResponse.sendRedirect("/currentUser");
         };
     }
 
