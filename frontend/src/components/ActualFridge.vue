@@ -9,8 +9,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="product in fridge.products" :key="product.product.productName">
-          <td>{{product.product.productName}}</td>
+        <tr v-for="product in fridge.products" :key="product.productName">
+          <td>{{product.productName}}</td>
           <td>{{product.amount}}</td>
           <td>
             <b-button variant="light" v-b-modal.modal-1 @click="setProduct(product)">Edytuj</b-button>
@@ -26,7 +26,7 @@
       </tbody>
     </table>
 
-    <b-modal id="modal-1" hide-footer title="Produkt">
+    <b-modal ref="my-modal" id="modal-1" hide-footer title="Produkt">
       <form>
         <div class="form-group">
           <label for="exampleInputEmail1">Nazwa produktu</label>
@@ -44,7 +44,7 @@
           <label for="exampleInputEmail1">Jednostka</label>
           <v-select :options="units" v-model="product.unit"></v-select>
         </div>
-        <button type="button" @click="save()" class="btn btn-success">Zapisz</button>
+        <button type="button" @click="save()" v-b-modal.modal-1 class="btn btn-success">Zapisz</button>
       </form>
     </b-modal>
   </div>
@@ -82,7 +82,6 @@ export default {
         )
         .then(response => {
           this.fridge = response.data;
-          toast.success(response, "Sukces");
         })
         .catch(function(error) {
           toast.error(error, "Błąd");
@@ -96,16 +95,15 @@ export default {
         this.product.price = 0;
         this.product.amount = 0;
       } else {
-        this.product.productName = product.product.productName;
-        this.product.productID = product.product.productID;
-        this.product.unit = product.product.unit;
-        this.product.price = product.product.price;
+        this.product.productName = product.productName;
+        this.product.productID = product.productID;
+        this.product.unit = product.unit;
+        this.product.price = product.price;
         this.product.amount = product.amount;
       }
     },
     save() {
       if (this.product.productID == 0) {
-        console.log(this.fridge)
         this.axios
           .post(`http://localhost:8100/product/${this.fridge.fridgeStateID}`, {
             productName: this.product.productName,
@@ -114,6 +112,7 @@ export default {
             amount: this.product.amount
           })
           .then(() => {
+            this.$refs['my-modal'].hide();
             toast.success("Dodano produkt", "Sukces");
             this.getFridge();
           })
@@ -130,6 +129,7 @@ export default {
             amount: this.product.amount
           })
           .then(() => {
+            this.$refs['my-modal'].hide();
             toast.success("Edycja pomyślna", "Sukces");
             this.getFridge();
           })
