@@ -1,54 +1,142 @@
 <template>
-  <b-list-group>
-    <b-list-group-item>Cras justo odio</b-list-group-item>
-    <b-list-group-item>Dapibus ac facilisis in</b-list-group-item>
-    <b-list-group-item>Morbi leo risus</b-list-group-item>
-    <b-list-group-item>Porta ac consectetur ac</b-list-group-item>
-    <b-list-group-item>Vestibulum at eros</b-list-group-item>
-  </b-list-group>
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nazwa</th>
+          <th scope="col">Ilość</th>
+          <th scope="col">Akcja</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="product in fridge.products" :key="product.product.productName">
+          <td>{{product.product.productName}}</td>
+          <td>{{product.amount}}</td>
+          <td>
+            <b-button variant="light" v-b-modal.modal-1 @click="setProduct(product)">Edytuj</b-button>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td>
+            <b-button variant="success" v-b-modal.modal-1 @click="setProduct(null)">Dodaj</b-button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <b-modal id="modal-1" hide-footer title="Produkt">
+      <form>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Nazwa produktu</label>
+          <input type="text" v-model="product.productName" class="form-control" id="name" />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Ilość</label>
+          <input type="text" v-model="product.amount" class="form-control" id="name" />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Szacowana cena</label>
+          <input type="text" v-model="product.price" class="form-control" id="name" />
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">Jednostka</label>
+          <v-select :options="units" v-model="product.unit"></v-select>
+        </div>
+        <button type="button" @click="save()" class="btn btn-success">Zapisz</button>
+      </form>
+    </b-modal>
+  </div>
 </template>
 
 
 <script>
 import toast from "../resources/toast";
+import "vue-select/dist/vue-select.css";
 
 export default {
   data() {
-    this.axios
-      .get("http://localhost:8100/fridgeState/1")
-      .then(function(response) {
-        console.log("response");
-        console.log(response);
-        toast.success(response, "Sukces");
-      })
-      .catch(function(error) {
-        console.log("error");
-        console.log(error);
-        toast.error(error, "Błąd");
-      });
-
-      return {
-          data : 0
+    return {
+      units: ["kg", "l", "p"],
+      fridge: {
+        products: []
+      },
+      product: {
+        productName: "",
+        productID: 0,
+        unit: "",
+        price: 0,
+        amount: 0
       }
+    };
+  },
+  mounted() {
+    this.getFridge();
   },
   methods: {
-    onSubmit(evt) {
-      evt.preventDefault();
+    getFridge() {
       this.axios
-        .post("http://localhost:8100/login", {
-          username: this.form.username,
-          password: this.form.password
-        })
-        .then(function(response) {
-          console.log("response");
-          console.log(response);
+        .get(
+          `http://localhost:8100/fridgeState/${localStorage.getItem("user")}`
+        )
+        .then(response => {
+          this.fridge = response.data;
           toast.success(response, "Sukces");
         })
         .catch(function(error) {
-          console.log("error");
-          console.log(error);
           toast.error(error, "Błąd");
         });
+    },
+    setProduct(product) {
+      if (product == null) {
+        this.product.productName = "";
+        this.product.productID = 0;
+        this.product.unit = null;
+        this.product.price = 0;
+        this.product.amount = 0;
+      } else {
+        this.product.productName = product.product.productName;
+        this.product.productID = product.product.productID;
+        this.product.unit = product.product.unit;
+        this.product.price = product.product.price;
+        this.product.amount = product.amount;
+      }
+    },
+    save() {
+      if (this.product.productID == 0) {
+        console.log(this.fridge)
+        this.axios
+          .post(`http://localhost:8100/product/${this.fridge.fridgeStateID}`, {
+            productName: this.product.productName,
+            unit: this.product.unit,
+            price: this.product.price,
+            amount: this.product.amount
+          })
+          .then(() => {
+            toast.success("Dodano produkt", "Sukces");
+            this.getFridge();
+          })
+          .catch(function(error) {
+            toast.error(error, "Błąd");
+          });
+      } else {
+        this.axios
+          .put(`http://localhost:8100/product`, {
+            productName: this.product.productName,
+            productID: this.product.productID,
+            unit: this.product.unit,
+            price: this.product.price,
+            amount: this.product.amount
+          })
+          .then(() => {
+            toast.success("Edycja pomyślna", "Sukces");
+            this.getFridge();
+          })
+          .catch(function(error) {
+            toast.error(error, "Błąd");
+          });
+      }
     }
   }
 };

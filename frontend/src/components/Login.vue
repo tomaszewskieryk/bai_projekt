@@ -49,7 +49,8 @@ export default {
         })
         .then(response => {
           toast.success("Zalogowano pomyślnie", "Sukces");
-          localStorage.setItem("user", response.data);
+          localStorage.setItem("user", response.data.userID);
+          console.log(localStorage.getItem("user"));
           this.$router.push('actual');
         })
         .catch(function(error) {
