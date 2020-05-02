@@ -68,6 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/register",
                         "/index",
                         "/test",
+                        "/fullUser",
+                        "/*",
                         "/testBadRequest",
                         "/testServerError",
                         "/favicon.ico")
