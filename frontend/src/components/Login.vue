@@ -48,13 +48,12 @@ export default {
           password: this.form.password
         })
         .then(response => {
-          toast.success("Zalogowano pomyślnie", "Sukces");
+          toast.success("Zalogowano pomyślnie", "Sukces!");
           localStorage.setItem("user", response.data.userID);
-          console.log(localStorage.getItem("user"));
           this.$router.push('actual');
         })
-        .catch(function(error) {
-          toast.error(error, "Błąd");
+        .catch(function() {
+          toast.error("Nie udało się zalogować", "Błąd!");
         });
     }
   }
