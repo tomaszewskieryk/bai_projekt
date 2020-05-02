@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.myshopper.repository.ProductRepository">
+
+    <resultMap id="productStateEntityResult" type="com.example.myshopper.repository.model.ProductStateEntity">
+        <id column="pfs.fridge_state_id" property="fridgeStateID"/>
+        <id column="pfs.product_id" property="productID"/>
+        <result column="pfs.amount" property="amount"/>
+    </resultMap>
+
+    <resultMap id="productResult" type="com.example.myshopper.model.Product">
+        <id column="p.product_id" property="productID"/>
+        <result column="p.amount" property="amount"/>
+        <result column="p.unit" property="unit"/>
+        <result column="p.product_name" property="productName"/>
+        <result column="p.price" property="price"/>
+<!--        price is bigdecimal-->
+<!--        unit is enum-->
+    </resultMap>
+
+    <select id="getProductStateEntityListByStateID" resultMap="productStateEntityResult">
+        select * from product_fridge_state pfs
+        where pfs.fridge_state_id = #{fridgeStateID}
+    </select>
+
+    <select id="getProductListByIDs" resultMap="productResult">
+        select * from products p
+        where p.product_id REGEXP
+<!--        <foreach collection="productIDs" item="item" index="index" open="'" close="'" separator="|">-->
+        <foreach collection="productIDs" item="item" index="index" separator="|">
+            #{item}
+        </foreach>
+    </select>
+
+</mapper>

@@ -31,6 +31,15 @@ public class CustomExceptionHandler {
         );
     }
 
+//    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> unsuspected(RuntimeException e) {
+        log.error(Arrays.toString(e.getStackTrace()));
+        return new ResponseEntity<>(
+                e.getMessage(),
+                HttpStatus.INTERNAL_SERVER_ERROR
+        );
+    }
+
     @ExceptionHandler(NotImplementedException.class)
     public ResponseEntity<Object> notImplemented(NotImplementedException e) {
         return new ResponseEntity<>(

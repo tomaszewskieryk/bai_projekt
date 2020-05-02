@@ -39,4 +39,10 @@ public class UserService {
 
         fridgeStateService.createFridgeStateForNewUser(userID);
     }
+
+    public User getExampleUser() {
+        User userMati = getUserByEmail("mati@test.com");
+        userMati.getFridgeStateList().add(fridgeStateService.getFridgeStateByID(1));
+        return userMati;
+    }
 }

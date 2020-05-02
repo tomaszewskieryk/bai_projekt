@@ -22,4 +22,9 @@ public class FridgeStateRepository {
         sqlSession.insert(CREATE_STATE_FOR_NEW_USER, fridgeStateEntity);
         return fridgeStateEntity.getFridgeStateID();
     }
+
+    public FridgeStateEntity getFridgeStateEntityByID(int fridgeStateID) {
+        return new FridgeStateEntity(1, "mockActual", true, 1);
+//        return sqlSession.selectOne(GET_STATE_BY_ID, fridgeStateID);
+    }
 }
