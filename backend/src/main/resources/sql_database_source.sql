@@ -25,8 +25,8 @@ CREATE TABLE products (
 );
 
 CREATE TABLE shopping_lists (
-    shopping_list_id  INT PRIMARY KEY AUTO_INCREMENT,
-    name              VARCHAR(50) NOT NULL
+    shopping_list_id    INT PRIMARY KEY AUTO_INCREMENT,
+    shopping_list_name  VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE product_fridge_state (
@@ -34,7 +34,7 @@ CREATE TABLE product_fridge_state (
   product_id       INT,
   amount           INT,
   CONSTRAINT pk_product_fridge_state PRIMARY KEY (fridge_state_id, product_id),
-  CONSTRAINT fk_fridge_state PRIMARY KEY (fridge_state_id) REFERENCES fridge_states (fridge_state_id),
+  CONSTRAINT fk_fridge_state FOREIGN KEY (fridge_state_id) REFERENCES fridge_states (fridge_state_id),
   CONSTRAINT fk_product_fridge_state FOREIGN KEY (product_id) REFERENCES products (product_id)
 );
 
@@ -64,7 +64,7 @@ INSERT INTO products (product_id, unit, product_name, price) VALUES (1, 'kg', 'p
 INSERT INTO products (product_id, unit, product_name, price) VALUES (2, 'p', 'herbatniki', 2.99);
 INSERT INTO products (product_id, unit, product_name, price) VALUES (3, 'p', 'woda gazowana', 1.39);
 
-INSERT INTO shopping_lists (shopping_list_id) VALUES (1, 'imprezowa shopping list');
+INSERT INTO shopping_lists (shopping_list_id, shopping_list_name) VALUES (1, 'imprezowa shopping list');
 
 INSERT INTO product_fridge_state (fridge_state_id, product_id, amount) VALUES (1, 1, 4);
 INSERT INTO product_fridge_state (fridge_state_id, product_id, amount) VALUES (1, 2, 5);
