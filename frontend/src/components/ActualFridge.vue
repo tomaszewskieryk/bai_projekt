@@ -44,8 +44,8 @@
           <label for="exampleInputEmail1">Jednostka</label>
           <v-select :clearable="false" :options="units" v-model="product.unit"></v-select>
         </div>
-        <button type="button" @click="save()" v-b-modal.modal-1 class="btn btn-success">Zapisz</button>
-        <button type="button" v-if="product.productID != 0" @click="delete()" v-b-modal.modal-1 class="btn btn-danger delete">Usuń</button>
+        <button type="button" @click="saveProduct()" v-b-modal.modal-1 class="btn btn-success">Zapisz</button>
+        <button type="button" v-if="product.productID != 0" @click="deleteProduct()" v-b-modal.modal-1 class="btn btn-danger delete">Usuń</button>
       </form>
     </b-modal>
   </div>
@@ -103,7 +103,7 @@ export default {
         this.product.amount = product.amount;
       }
     },
-    save() {
+    saveProduct() {
       if (this.product.productID == 0) {
         this.axios
           .post(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products`, {
@@ -139,7 +139,7 @@ export default {
           });
       }
     },
-    delete() {
+    deleteProduct() {
         this.axios
           .post(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products/${this.product.productID}`, {
             productName: this.product.productName,
