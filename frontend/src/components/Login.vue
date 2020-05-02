@@ -47,14 +47,12 @@ export default {
           username: this.form.username,
           password: this.form.password
         })
-        .then(function(response) {
-          console.log("response");
-          console.log(response);
-          toast.success(response, "Sukces");
+        .then(response => {
+          toast.success("Zalogowano pomyślnie", "Sukces");
+          localStorage.setItem("user", response.data);
+          this.$router.push('actual');
         })
         .catch(function(error) {
-          console.log("error");
-          console.log(error);
           toast.error(error, "Błąd");
         });
     }

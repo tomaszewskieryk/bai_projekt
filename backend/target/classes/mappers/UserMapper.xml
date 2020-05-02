@@ -3,7 +3,7 @@
 <mapper namespace="com.example.myshopper.repository.UserRepository">
 
     <resultMap type="com.example.myshopper.model.User" id="userResult">
-        <id column="userID" property="userID"/>
+        <id column="user_id" property="userID"/>
         <result column="nickname" property="nickname"/>
         <result column="email" property="email"/>
         <result column="password" property="password"/>
@@ -21,7 +21,7 @@
         select * from users where nickname = #{nickname}
     </select>
 
-    <insert id="createNewUser">
+    <insert id="createNewUser" useGeneratedKeys="true">
         insert into users (nickname, email, password)
         values (#{nickname},#{email},#{password})
         <selectKey resultType="Integer" keyProperty="userID" order="AFTER">

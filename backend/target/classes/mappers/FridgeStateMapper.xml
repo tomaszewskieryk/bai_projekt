@@ -2,11 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.myshopper.repository.FridgeStateRepository">
 
-    <insert id="createFridgeStateForNewUser">
-        insert into fridgeStates (fridgeName, isActual, userID)
-        values ('actualState', true, #{userID})
+    <resultMap id="fridgeStateResult" type="com.example.myshopper.repository.model.FridgeStateEntity">
+        <id column="fs.fridge_state_id" property="fridgeStateID"/>
+        <result column="fs.fridge_name" property="nickname"/>
+        <result column="fs.actual" property="email"/>
+        <result column="fs.password" property="password"/>
+        <result column="fs.user_id" property="userID"/>
+    </resultMap>
+
+    <insert id="createFridgeStateForNewUser" useGeneratedKeys="true">
+        insert into fridge_states (fridge_name, actual, user_id)
+        values ('actual', true, #{userID})
         <selectKey resultType="Integer" keyProperty="fridgeStateID" order="AFTER">
             SELECT LAST_INSERT_ID();
         </selectKey>
     </insert>
+
+    <select id="getFridgeStateByID" parameterType="int" resultMap="fridgeStateResult">
+        select * from fridge_states fs
+        where fs.fridge_state_id = #{fridgeStateID}
+    </select>
+
 </mapper>
