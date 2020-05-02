@@ -72,17 +72,22 @@ export default {
     };
   },
   mounted() {
-    this.axios
-      .get(`http://localhost:8100/fridgeState/${localStorage.getItem("user")}`)
-      .then(response => {
-        this.fridge = response.data;
-        toast.success(response, "Sukces");
-      })
-      .catch(function(error) {
-        toast.error(error, "Błąd");
-      });
+    this.getFridge();
   },
   methods: {
+    getFridge() {
+      this.axios
+        .get(
+          `http://localhost:8100/fridgeState/${localStorage.getItem("user")}`
+        )
+        .then(response => {
+          this.fridge = response.data;
+          toast.success(response, "Sukces");
+        })
+        .catch(function(error) {
+          toast.error(error, "Błąd");
+        });
+    },
     setProduct(product) {
       if (product == null) {
         this.product.productName = "";
@@ -109,7 +114,7 @@ export default {
           })
           .then(() => {
             toast.success("Dodano produkt", "Sukces");
-            this.$router.push("actual");
+            this.getFridge();
           })
           .catch(function(error) {
             toast.error(error, "Błąd");
@@ -125,7 +130,7 @@ export default {
           })
           .then(() => {
             toast.success("Edycja pomyślna", "Sukces");
-            this.$router.push("actual");
+            this.getFridge();
           })
           .catch(function(error) {
             toast.error(error, "Błąd");
