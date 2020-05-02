@@ -44,7 +44,7 @@
           <label for="exampleInputEmail1">Jednostka</label>
           <v-select :options="units" v-model="product.unit"></v-select>
         </div>
-        <button type="button" @click="save()" class="btn btn-success">Submit</button>
+        <button type="button" @click="save()" class="btn btn-success">Zapisz</button>
       </form>
     </b-modal>
   </div>
@@ -105,8 +105,9 @@ export default {
     },
     save() {
       if (this.product.productID == 0) {
+        console.log(this.fridge)
         this.axios
-          .post(`http://localhost:8100/product/${this.fridge.fridgeID}`, {
+          .post(`http://localhost:8100/product/${this.fridge.fridgeStateID}`, {
             productName: this.product.productName,
             unit: this.product.unit,
             price: this.product.price,
