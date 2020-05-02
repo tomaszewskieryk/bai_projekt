@@ -7,8 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CountedProduct {
+public class CountedProduct extends Product{
 
-    Product product;
     int amount;
+
+    public CountedProduct(Product product, int amount) {
+        super(product.getProductID(), product.getProductName(), product.getUnit(), product.getPrice());
+        this.amount = amount;
+    }
 }

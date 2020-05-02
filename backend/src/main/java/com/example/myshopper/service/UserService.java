@@ -30,6 +30,10 @@ public class UserService {
         return userRepository.getUserByEmail(email);
     }
 
+    public User getUserByID(int userID){
+        return userRepository.getUserByID(userID);
+    }
+
     public void createUser(User user) {
         userValidator.validate(user);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
