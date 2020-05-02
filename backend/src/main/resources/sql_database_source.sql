@@ -54,10 +54,10 @@ INSERT INTO shoppinglist.users (user_id, nickname, email, password) VALUES (2, '
 # password: "password"
 INSERT INTO shoppinglist.users (user_id, nickname, email, password) VALUES (3, 'Iza', 'iza@test.com', '$2a$10$NQooyYqpYY0FqxZ54tYlZO.EQRZ0434cJF4.hkBh2oZwZeFjtrhyW');
 
-INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (1, 'aktualna', true, 1);
+INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (1, 'actual', true, 1);
 INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (2, 'imprezowa', false, 1);
-INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (3, 'aktualna', true, 2);
-INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (4, 'aktualna', true, 3);
+INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (3, 'actual', true, 2);
+INSERT INTO fridge_states (fridge_state_id, fridge_name, actual, user_id) VALUES (4, 'actual', true, 3);
 
 INSERT INTO products (product_id, unit, product_name, price) VALUES (1, 'kg', 'pomidory', 5.33);
 INSERT INTO products (product_id, unit, product_name, price) VALUES (2, 'p', 'herbatniki', 2.99);

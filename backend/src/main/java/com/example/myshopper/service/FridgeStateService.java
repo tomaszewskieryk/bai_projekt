@@ -1,5 +1,6 @@
 package com.example.myshopper.service;
 
+import com.example.myshopper.exception.InputException;
 import com.example.myshopper.exception.InternalException;
 import com.example.myshopper.model.CountedProduct;
 import com.example.myshopper.model.FridgeState;
@@ -32,19 +33,14 @@ public class FridgeStateService {
     }
 
     public FridgeState getFridgeStateByID(int stateID) {
-        FridgeStateEntity fridgeStateEntity = fridgeStateRepository.getFridgeStateEntityByID(stateID);
-        if (fridgeStateEntity.getFridgeStateID() == 0) {
-            log.info("Could not find any fridge state with stateID=" + stateID);
-            return null;
-        }
+        FridgeStateEntity fridgeStateEntity = fridgeStateRepository.getFridgeStateEntityByID(stateID)
+                .orElseThrow(() -> new InputException("Could not find any fridge state with stateID=" + stateID));
         return transformFromDb(fridgeStateEntity);
     }
 
     public FridgeState getActualFridgeStateByUserID(int userID) {
-        FridgeStateEntity fridgeStateEntity = fridgeStateRepository.getActualFridgeStateEntityByUserID(userID);
-        if (fridgeStateEntity.getFridgeStateID() == 0) {
-            throw new InternalException("No actual fridge state for user with id=" + userID);
-        }
+        FridgeStateEntity fridgeStateEntity = fridgeStateRepository.getActualFridgeStateEntityByUserID(userID)
+                        .orElseThrow(() -> new InternalException("No actual fridge state for user with id=" + userID));
         return transformFromDb(fridgeStateEntity);
     }
 

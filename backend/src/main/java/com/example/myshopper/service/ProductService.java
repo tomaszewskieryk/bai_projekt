@@ -2,7 +2,9 @@ package com.example.myshopper.service;
 
 import com.example.myshopper.model.CountedProduct;
 import com.example.myshopper.model.Product;
+import com.example.myshopper.model.enums.Unit;
 import com.example.myshopper.repository.ProductRepository;
+import com.example.myshopper.repository.model.ProductEntity;
 import com.example.myshopper.repository.model.ProductStateEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +36,24 @@ public class ProductService {
         Map<String, Integer> productsAmountMap = getProductsAmountMap(productStateEntities);
         List<Integer> productIDs = getProductIds(productStateEntities);
 
-        List<Product> products = productRepository.getProductsByIds(productIDs);
+        List<ProductEntity> productEntities = productRepository.getProductsByIds(productIDs);
+        List<Product> products = transformToProducts(productEntities);
         return mergeProductsWithItsAmounts(products, productsAmountMap);
+    }
+
+    private List<Product> transformToProducts(List<ProductEntity> productEntities) {
+        return productEntities.stream()
+                .map(this::transformToProduct)
+                .collect(Collectors.toList());
+    }
+
+    private Product transformToProduct(ProductEntity pe) {
+        return Product.builder()
+                .productID(pe.getProductID())
+                .productName(pe.getProductName())
+                .price(pe.getPrice())
+                .unit(Unit.valueOf(pe.getUnit()))
+                .build();
     }
 
     private Map<String, Integer> getProductsAmountMap(List<ProductStateEntity> productStateEntities) {

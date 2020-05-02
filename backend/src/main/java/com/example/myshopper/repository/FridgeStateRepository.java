@@ -5,15 +5,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FridgeStateRepository {
 
     private static final String CREATE_STATE_FOR_NEW_USER = "createFridgeStateForNewUser";
     private static final String GET_STATE_BY_ID = "getFridgeStateByID";
-    private static final String GET_STATE_BY_USER_ID = "getFridgeStateByUserID";
+    private static final String GET_STATES_BY_USER_ID = "getFridgeStatesByUserID";
     private static final String GET_ACTUAL_STATE_BY_USER_ID = "getActualFridgeStateByUserID";
 
     private final SqlSession sqlSession;
@@ -28,20 +28,15 @@ public class FridgeStateRepository {
         return fridgeStateEntity.getFridgeStateID();
     }
 
-    public FridgeStateEntity getFridgeStateEntityByID(int fridgeStateID) {
-        return new FridgeStateEntity(1, "mockActual", true, 1);
-//        return sqlSession.selectOne(GET_STATE_BY_ID, fridgeStateID);
+    public Optional<FridgeStateEntity> getFridgeStateEntityByID(int fridgeStateID) {
+        return Optional.ofNullable(sqlSession.selectOne(GET_STATE_BY_ID, fridgeStateID));
     }
 
     public List<FridgeStateEntity> getFridgeStatesEntityByUserID(int userID) {
-        List<FridgeStateEntity> entities = new ArrayList<>();
-        entities.add(new FridgeStateEntity(1, "mockActual", true, 1));
-        return entities;
-//        return sqlSession.selectList(GET_STATE_BY_USER_ID, userID);
+        return sqlSession.selectList(GET_STATES_BY_USER_ID, userID);
     }
 
-    public FridgeStateEntity getActualFridgeStateEntityByUserID(int userID) {
-        return new FridgeStateEntity(1, "mockActual", true, 1);
-//        return sqlSession.selectOne(GET_ACTUAL_STATE_BY_USER_ID, userID);
+    public Optional<FridgeStateEntity> getActualFridgeStateEntityByUserID(int userID) {
+        return Optional.ofNullable(sqlSession.selectOne(GET_ACTUAL_STATE_BY_USER_ID, userID));
     }
 }

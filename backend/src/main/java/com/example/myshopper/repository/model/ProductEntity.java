@@ -1,8 +1,6 @@
-package com.example.myshopper.model;
+package com.example.myshopper.repository.model;
 
-import com.example.myshopper.model.enums.Unit;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,10 +9,10 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Product {
+public class ProductEntity {
+
     private int productID;
     private String productName;
-    private Unit unit;
+    private String unit;
     private BigDecimal price;
 }
