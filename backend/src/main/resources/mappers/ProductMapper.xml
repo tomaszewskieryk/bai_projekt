@@ -43,16 +43,16 @@
     </insert>
 
     <update id="updateProductStateEntity">
-        update into product_fridge_state set
+        update product_fridge_state set
             amount = #{amount}
         where fridge_state_id = #{fridgeStateID}
         and product_id = #{productID}
     </update>
 
     <update id="updateProductEntity">
-        update into products set
+        update products set
             unit = #{unit},
-            productName = #{productName},
+            product_name = #{productName},
             price = #{price}
         where product_id = #{productID}
     </update>

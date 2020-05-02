@@ -26,7 +26,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/fridges/{fridgeStateID}/products/{productID}")
-    public void deleteProduct(@PathVariable int fridgeStateID, @PathVariable int productID){
+    public void deleteProduct(@PathVariable int fridgeStateID, @PathVariable int productID) {
         productService.deleteProductFromFridge(fridgeStateID, productID);
     }
 }
