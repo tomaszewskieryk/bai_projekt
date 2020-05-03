@@ -46,8 +46,12 @@ public class ShoppingListService {
                 .orElseThrow(() -> new InputException("Could not find any fridgeState with fridgeStateID=" + fridgeStateID));
         ShoppingList shoppingList = createShoppingList(fridgeStateEntity);
 
-        ShoppingListEntity shoppingListEntity = createDatabaseShoppingList(shoppingList, fridgeStateEntity.getUserID());
-        return shoppingListEntity.getShoppingListID();
+        if(!shoppingList.getProducts().isEmpty()) {
+            ShoppingListEntity shoppingListEntity = createDatabaseShoppingList(shoppingList, fridgeStateEntity.getUserID());
+            return shoppingListEntity.getShoppingListID();
+        } else {
+            throw new InputException("Shopping list empty");
+        }
     }
 
     public int shareShoppingList(int shoppingListID, String email) {
