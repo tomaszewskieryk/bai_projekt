@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress ALL -->
+<mapper namespace="com.example.myshopper.repository.ShoppingListRepository">
+
+    <resultMap id="shoppingListResult" type="com.example.myshopper.repository.model.ShoppingListEntity">
+        <id column="shopping_list_id" property="shoppingListID"/>
+        <result column="shopping_list_name" property="shoppingListName"/>
+        <result column="user_id" property="userID"/>
+    </resultMap>
+
+    <resultMap id="productStateEntityResult" type="com.example.myshopper.repository.model.ProductShoppingListEntity">
+        <id column="shopping_list_id" property="shoppingListID"/>
+        <id column="product_id" property="productID"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+    <insert id="createShoppingListEntity" useGeneratedKeys="true">
+        insert into shopping_lists (shopping_list_name, user_id)
+        value (#{shoppingListName}, #{userID})
+        <selectKey resultType="Integer" keyProperty="shoppingListID" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+
+    <insert id="createProductShoppingListEntities" parameterType="list">
+        insert into product_shopping_list (shopping_list_id, product_id, amount)
+        values
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
+            #{element.shoppingListID}, #{element.productID}, #{element.amount}
+        </foreach>
+    </insert>
+
+    <select id="getShoppingListEntitiesByUserID" resultMap="shoppingListResult">
+        select * from shopping_lists
+        where user_id = #{userID}
+    </select>
+
+    <select id="getShoppingListEntitiesByID" resultMap="shoppingListResult">
+        select * from shopping_lists
+        where shopping_list_id = #{shoppingListID}
+    </select>
+
+    <delete id="deleteProductShoppingListEntitiesByListID">
+        delete from product_shopping_list
+        where shopping_list_id = #{shoppingListID}
+    </delete>
+
+    <delete id="deleteShoppingListEntitiesByListID">
+        delete from shopping_lists
+        where shopping_list_id = #{shoppingListID}
+    </delete>
+
+</mapper>

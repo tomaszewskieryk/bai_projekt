@@ -2,7 +2,7 @@ package com.example.myshopper.security;
 
 import com.example.myshopper.model.User;
 import com.example.myshopper.service.UserService;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Log4j2
+@Slf4j
 @Service("userDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
@@ -39,7 +39,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             builder.password(user.getPassword());
             builder.authorities("ROLE_USER");
         } else {
-            throw new UsernameNotFoundException("User not found!");
+            throw new UsernameNotFoundException("User: " + email + "not found!");
         }
 
         return builder.build();

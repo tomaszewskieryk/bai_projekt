@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--suppress ALL -->
+<mapper namespace="com.example.myshopper.repository.ProductRepository">
+
+    <resultMap id="productStateEntityResult" type="com.example.myshopper.repository.model.ProductStateEntity">
+        <id column="fridge_state_id" property="fridgeStateID"/>
+        <id column="product_id" property="productID"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+    <resultMap id="productResult" type="com.example.myshopper.repository.model.ProductEntity">
+        <id column="product_id" property="productID"/>
+        <result column="unit" property="unit"/>
+        <result column="product_name" property="productName"/>
+        <result column="price" property="price"/>
+    </resultMap>
+
+    <resultMap id="productShoppingListEntityResult" type="com.example.myshopper.repository.model.ProductShoppingListEntity">
+        <id column="shopping_list_id" property="shoppingListID"/>
+        <id column="product_id" property="productID"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
+    <select id="getProductStateEntityListByStateID" resultMap="productStateEntityResult">
+        select * from product_fridge_state
+        where fridge_state_id = #{fridgeStateID}
+    </select>
+
+    <select id="getProductListByIDs" parameterType="list" resultMap="productResult">
+        select * from products
+        where product_id IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                    #{item}
+        </foreach>
+    </select>
+
+    <select id="getProductShoppingListEntitiesByListID" resultMap="productShoppingListEntityResult">
+        select * from product_shopping_list
+        where shopping_list_id = #{shoppingListID}
+    </select>
+
+    <insert id="createProductEntity" useGeneratedKeys="true">
+        insert into products (unit, product_name, price)
+        values (#{unit},#{productName},#{price})
+        <selectKey resultType="Integer" keyProperty="productID" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+
+    <insert id="createProductStateEntity">
+        insert into product_fridge_state (fridge_state_id, product_id, amount)
+        values (#{fridgeStateID},#{productID},#{amount})
+    </insert>
+
+    <update id="updateProductStateEntity">
+        update product_fridge_state set
+            amount = #{amount}
+        where fridge_state_id = #{fridgeStateID}
+        and product_id = #{productID}
+    </update>
+
+    <update id="updateProductEntity">
+        update products set
+            unit = #{unit},
+            product_name = #{productName},
+            price = #{price}
+        where product_id = #{productID}
+    </update>
+
+    <delete id="deleteProductEntity">
+        delete from products
+        where product_id = #{productID}
+    </delete>
+
+    <delete id="deleteProductStateEntity">
+        delete from product_fridge_state
+        where product_id = #{productID}
+        and fridge_state_id = #{fridgeStateID}
+    </delete>
+
+    <delete id="deleteProductShoppingListEntity">
+        delete from product_shopping_list
+        where product_id = #{productID}
+        and shopping_list_id = #{shoppingListID}
+    </delete>
+
+    <delete id="deleteAllProductStateEntities">
+        delete from product_fridge_state
+        where product_id = #{productID}
+    </delete>
+
+</mapper>

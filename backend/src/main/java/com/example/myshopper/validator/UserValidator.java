@@ -29,15 +29,14 @@ public class UserValidator {
     }
 
     private void validateNickname(String nickname) {
-        if (userRepository.getUserByNickname(nickname) != null) {
+        if (userRepository.getUserByNickname(nickname).isPresent()) {
             throw new InputException("User with that nickname already exists!");
         }
     }
 
     private void validateEmail(String email) {
-        if (userRepository.getUserByEmail(email) != null) {
+        if (userRepository.getUserByEmail(email).isPresent()) {
             throw new InputException("User with that email already exists!");
         }
     }
-
 }

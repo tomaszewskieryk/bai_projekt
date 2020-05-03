@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import toast from '../resources/toast'
+
 export default {
   data() {
     return {
@@ -56,11 +58,12 @@ export default {
           nickname: this.form.nickname,
           password: this.form.password
         })
-        .then(function(response) {
-          console.log(response);
+        .then(() => {
+          toast.success("Rejestracja przebiegła pomyślnie", "Sukces!");
+          this.$router.push('login');
         })
-        .catch(function(error) {
-          console.log(error);
+        .catch(function() {
+          toast.error("Nie udało się zarejestrować", "Błąd");
         });
     }
   }

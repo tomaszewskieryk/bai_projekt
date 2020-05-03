@@ -1,13 +1,8 @@
 <template>
-
   <div class="form">
     <h1>Logowanie</h1>
     <b-form @submit="onSubmit">
-      <b-form-group
-        id="input-group-1"
-        label="Adres email:"
-        label-for="input-1"
-      >
+      <b-form-group id="input-group-1" label="Adres email:" label-for="input-1">
         <b-form-input
           id="input-1"
           v-model="form.username"
@@ -33,7 +28,9 @@
 </template>
 
 <script>
-export default {
+  import toast from "../resources/toast";
+
+  export default {
   data() {
     return {
       form: {
@@ -42,10 +39,27 @@ export default {
       }
     };
   },
+  mounted() {
+    if (localStorage.getItem("user") != null) {
+      this.$router.push("actual");
+    }
+  },
   methods: {
     onSubmit(evt) {
       evt.preventDefault();
-      this.$toastr.success('Zalogowano', 'Sukces!');
+      this.axios
+        .post("http://localhost:8100/login", {
+          username: this.form.username,
+          password: this.form.password
+        })
+        .then(response => {
+          toast.success("Zalogowano pomyślnie", "Sukces!");
+          localStorage.setItem("user", response.data);
+          window.location.reload();
+        })
+        .catch(function() {
+          toast.error("Nie udało się zalogować", "Błąd!");
+        });
     }
   }
 };
@@ -58,13 +72,13 @@ export default {
     margin: auto;
   }
 }
-@media (min-width: 800px) and (max-width: 999px){
+@media (min-width: 800px) and (max-width: 999px) {
   .form {
     width: 55%;
     margin: auto;
   }
 }
-@media (min-width: 600px) and (max-width: 799px){
+@media (min-width: 600px) and (max-width: 799px) {
   .form {
     width: 70%;
     margin: auto;
