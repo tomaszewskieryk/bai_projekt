@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import toast from "../resources/toast";
+  import toast from "../resources/toast";
 
-export default {
+  export default {
   data() {
     return {
       form: {
@@ -54,7 +54,7 @@ export default {
         })
         .then(response => {
           toast.success("Zalogowano pomyślnie", "Sukces!");
-          localStorage.setItem("user", response.data.userID);
+          localStorage.setItem("user", response.data);
           window.location.reload();
         })
         .catch(function() {

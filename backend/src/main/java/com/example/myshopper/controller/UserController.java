@@ -16,7 +16,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @GetMapping("/fullUser")
     public User getFridgeStateByID() {
         return userService.getExampleUser();
