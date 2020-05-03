@@ -50,14 +50,16 @@ public class ProductService {
     }
 
     public void createProductForFridgeState(int fridgeStateID, CountedProduct product) {
-        ProductEntity productEntity = productTransformer.transformToProductEntity(product);
-        int productID = productRepository.createProductEntity(productEntity);
+        int productID = product.getProductID();
+        if (productID <= 0) {
+            ProductEntity productEntity = productTransformer.transformToProductEntity(product);
+            productID = productRepository.createProductEntity(productEntity);
 
-        saveProductStateEntity(fridgeStateID, productID, product.getAmount());
-
-        if (!checkIfStateIsActual(fridgeStateID)) {
-            saveProductStateEntity(getActualFridgeStateID(fridgeStateID), productID, 0);
+            if (!checkIfStateIsActual(fridgeStateID)) {
+                saveProductStateEntity(getActualFridgeStateID(fridgeStateID), productID, 0);
+            }
         }
+        saveProductStateEntity(fridgeStateID, productID, product.getAmount());
     }
 
     public void updateProduct(CountedProduct product, int fridgeStateID) {
