@@ -163,6 +163,7 @@ public class ProductService {
 
     private void deleteProductAndAllConnections(int productID) {
         productRepository.deleteAllProductStateEntities(productID);
+        productRepository.deleteAllProductShoppingListEntities(productID);
         productRepository.deleteProductEntity(productID);
 
         log.info("Deleted product with id=" + productID);

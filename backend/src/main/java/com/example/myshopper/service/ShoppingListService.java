@@ -5,6 +5,7 @@ import com.example.myshopper.exception.InternalException;
 import com.example.myshopper.model.CountedProduct;
 import com.example.myshopper.model.FridgeState;
 import com.example.myshopper.model.ShoppingList;
+import com.example.myshopper.model.User;
 import com.example.myshopper.repository.FridgeStateRepository;
 import com.example.myshopper.repository.ShoppingListRepository;
 import com.example.myshopper.repository.model.FridgeStateEntity;
@@ -22,20 +23,22 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class ShoppingListService {
-
     private final ShoppingListRepository shoppingListRepository;
+
     private final FridgeStateRepository fridgeStateRepository;
     private final FridgeStateService fridgeStateService;
     private final FridgeStateTransformer fridgeStateTransformer;
     private final ShoppingListTransformer shoppingListTransformer;
+    private final UserService userService;
 
     @Autowired
-    public ShoppingListService(ShoppingListRepository shoppingListRepository, FridgeStateRepository fridgeStateRepository, FridgeStateService fridgeStateService, FridgeStateTransformer fridgeStateTransformer, ShoppingListTransformer shoppingListTransformer) {
+    public ShoppingListService(ShoppingListRepository shoppingListRepository, FridgeStateRepository fridgeStateRepository, FridgeStateService fridgeStateService, FridgeStateTransformer fridgeStateTransformer, ShoppingListTransformer shoppingListTransformer, UserService userService) {
         this.shoppingListRepository = shoppingListRepository;
         this.fridgeStateRepository = fridgeStateRepository;
         this.fridgeStateService = fridgeStateService;
         this.fridgeStateTransformer = fridgeStateTransformer;
         this.shoppingListTransformer = shoppingListTransformer;
+        this.userService = userService;
     }
 
     public int createNewShoppingListForFridge(int fridgeStateID) {
@@ -43,15 +46,52 @@ public class ShoppingListService {
                 .orElseThrow(() -> new InputException("Could not find any fridgeState with fridgeStateID=" + fridgeStateID));
         ShoppingList shoppingList = createShoppingList(fridgeStateEntity);
 
-        ShoppingListEntity shoppingListEntity = shoppingListTransformer.transformToShoppingListEntity(shoppingList, fridgeStateEntity.getUserID());
+        ShoppingListEntity shoppingListEntity = createDatabaseShoppingList(shoppingList, fridgeStateEntity.getUserID());
+        return shoppingListEntity.getShoppingListID();
+    }
+
+    public int shareShoppingList(int shoppingListID, String email) {
+        ShoppingListEntity originalShoppingListEntity = shoppingListRepository.getShoppingListEntitiesByID(shoppingListID)
+                .orElseThrow(() -> new InputException("Could not find any shoppingList with shoppingListID=" + shoppingListID));
+        ShoppingList originalShoppingList = shoppingListTransformer.transformToShoppingList(originalShoppingListEntity);
+        User targetUser = userService.getUserByEmail(email);
+
+        ShoppingList newShoppingList = new ShoppingList(originalShoppingList);
+        ShoppingListEntity newShoppingListEntity = createDatabaseShoppingList(newShoppingList, targetUser.getUserID());
+
+        return newShoppingListEntity.getShoppingListID();
+    }
+
+    public List<ShoppingList> getShoppingListsForUser(int userID) {
+        List<ShoppingListEntity> shoppingListEntities = shoppingListRepository.getShoppingListEntitiesByUserID(userID);
+
+        return shoppingListEntities.stream()
+                .map(shoppingListTransformer::transformToShoppingList)
+                .collect(Collectors.toList());
+    }
+
+    public ShoppingList getShoppingListByID(int shoppingListID) {
+        ShoppingListEntity shoppingListEntity = shoppingListRepository.getShoppingListEntitiesByID(shoppingListID)
+                .orElseThrow(() -> new InputException("Could not find any shoppingList with shoppingListID=" + shoppingListID));
+        return shoppingListTransformer.transformToShoppingList(shoppingListEntity);
+    }
+
+    public void deleteShoppingList(int shoppingListID) {
+        shoppingListRepository.deleteAllShoppingListConnections(shoppingListID);
+        log.info("Deleted productShoppingListEntity with shoppingListID=" + shoppingListID);
+        shoppingListRepository.deleteShippingListEntity(shoppingListID);
+        log.info("Deleted shoppingList with shoppingListID=" + shoppingListID);
+    }
+
+    private ShoppingListEntity createDatabaseShoppingList(ShoppingList shoppingList, int userID) {
+        ShoppingListEntity shoppingListEntity = shoppingListTransformer.transformToShoppingListEntity(shoppingList, userID);
         int shoppingListID = shoppingListRepository.createShoppingListEntity(shoppingListEntity);
         log.info("Created shoppingList with id=" + shoppingListID);
         shoppingList.setShoppingListID(shoppingListID);
 
         List<ProductShoppingListEntity> productShoppingListEntities = shoppingListTransformer.transformToProductShoppingListEntities(shoppingList);
         shoppingListRepository.createProductShoppingListEntities(productShoppingListEntities);
-
-        return shoppingListEntity.getShoppingListID();
+        return shoppingListEntity;
     }
 
     private ShoppingList createShoppingList(FridgeStateEntity fridgeStateEntity) {
@@ -89,25 +129,4 @@ public class ShoppingListService {
         products.forEach(product -> currentProductsMap.put(String.valueOf(product.getProductID()), product));
         return currentProductsMap;
     }
-
-    public List<ShoppingList> getShoppingListsForUser(int userID) {
-        List<ShoppingListEntity> shoppingListEntities = shoppingListRepository.getShoppingListEntitiesByUserID(userID);
-
-        return shoppingListEntities.stream()
-                .map(shoppingListTransformer::transformToShoppingList)
-                .collect(Collectors.toList());
-    }
-
-    public ShoppingList getShoppingListByID(int shoppingListID) {
-        ShoppingListEntity shoppingListEntity = shoppingListRepository.getShoppingListEntitiesByID(shoppingListID)
-                .orElseThrow(() -> new InputException("Could not find any shoppingList with shoppingListID=" + shoppingListID));
-        return shoppingListTransformer.transformToShoppingList(shoppingListEntity);
-    }
-
-    public void deleteShoppingList(int shoppingListID) {
-            shoppingListRepository.deleteAllShoppingListConnections(shoppingListID);
-            log.info("Deleted productShoppingListEntity with shoppingListID=" + shoppingListID);
-            shoppingListRepository.deleteShippingListEntity(shoppingListID);
-            log.info("Deleted shoppingList with shoppingListID=" + shoppingListID);
-        }
 }

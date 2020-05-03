@@ -27,7 +27,8 @@ public class ProductRepository {
     private static final String DELETE_PRODUCT_ENTITY = "deleteProductEntity";
     private static final String DELETE_PRODUCT_STATE_ENTITY = "deleteProductStateEntity";
     private static final String DELETE_PRODUCT_SHOPPING_LIST_ENTITY = "deleteProductShoppingListEntity";
-    private static final String DELETE_PRODUCT_STATE_ENTITIES = "deleteProductStateEntities";
+    private static final String DELETE_ALL_PRODUCT_STATE_ENTITIES = "deleteAllProductStateEntities";
+    private static final String DELETE_ALL_PRODUCT_SHOPPING_LIST_ENTITIES = "deleteAllProductShoppingListEntities";
 
     private final SqlSession sqlSession;
 
@@ -77,7 +78,7 @@ public class ProductRepository {
     }
 
     public void deleteAllProductStateEntities(int productID) {
-        sqlSession.delete(DELETE_PRODUCT_STATE_ENTITIES, productID);
+        sqlSession.delete(DELETE_ALL_PRODUCT_STATE_ENTITIES, productID);
     }
 
     public void deleteProductShoppingListEntity(int shoppingListID, int productID) {
@@ -85,5 +86,9 @@ public class ProductRepository {
         params.put("shoppingListID", shoppingListID);
         params.put("productID", productID);
         sqlSession.delete(DELETE_PRODUCT_SHOPPING_LIST_ENTITY, params);
+    }
+
+    public void deleteAllProductShoppingListEntities(int productID) {
+        sqlSession.delete(DELETE_ALL_PRODUCT_SHOPPING_LIST_ENTITIES, productID);
     }
 }

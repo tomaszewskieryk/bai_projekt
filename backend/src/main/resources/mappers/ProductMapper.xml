@@ -85,7 +85,7 @@
         and shopping_list_id = #{shoppingListID}
     </delete>
 
-    <delete id="deleteProductStateEntities">
+    <delete id="deleteAllProductStateEntities">
         delete from product_fridge_state
         where product_id = #{productID}
     </delete>

@@ -23,4 +23,8 @@ public class ShoppingList {
         this.shoppingListName = shoppingListName;
         this.products = products;
     }
+
+    public ShoppingList(ShoppingList shoppingList){
+        this(shoppingList.getShoppingListName(), shoppingList.getProducts());
+    }
 }

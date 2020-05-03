@@ -5,6 +5,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class UserRepository {
 
@@ -23,8 +25,8 @@ public class UserRepository {
     }
 
 
-    public User getUserByEmail(String email) {
-        return sqlSession.selectOne(GET_USER_BY_EMAIL, email);
+    public Optional<User> getUserByEmail(String email) {
+        return Optional.ofNullable(sqlSession.selectOne(GET_USER_BY_EMAIL, email));
     }
 
     public User getTestUser() {
@@ -36,8 +38,8 @@ public class UserRepository {
         return user.getUserID();
     }
 
-    public User getUserByNickname(String nickname) {
-        return sqlSession.selectOne(GET_USER_BY_NICKNAME, nickname);
+    public Optional<User> getUserByNickname(String nickname) {
+        return Optional.ofNullable(sqlSession.selectOne(GET_USER_BY_NICKNAME, nickname));
     }
 
     public User getUserByID(int userID) {
