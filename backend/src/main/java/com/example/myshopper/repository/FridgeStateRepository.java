@@ -23,7 +23,7 @@ public class FridgeStateRepository {
     private static final String UPDATE_FRIDGE_STATE_ENTITY = "updateFridgeStateEntity";
 
     private static final String DELETE_STATE_ENTITY = "deleteFridgeStateEntity";
-    private static final String DELETE_PRODUCT_STATE_ENTITIES_BY_FRIDGE_ID = "deleteProductStateEntitiesByFridgeID";
+    private static final String DELETE_PRODUCT_STATE_ENTITIES_BY_FRIDGE_ID = "deleteAllProductShoppingListEntities";
 
 
     private final SqlSession sqlSession;
@@ -68,10 +68,10 @@ public class FridgeStateRepository {
     }
 
     public void deleteFridgeStateEntity(int fridgeStateID) {
-        sqlSession.update(DELETE_STATE_ENTITY, fridgeStateID);
+        sqlSession.delete(DELETE_STATE_ENTITY, fridgeStateID);
     }
 
     public void deleteAllFridgeConnections(int fridgeStateID) {
-        sqlSession.update(DELETE_PRODUCT_STATE_ENTITIES_BY_FRIDGE_ID, fridgeStateID);
+        sqlSession.delete(DELETE_PRODUCT_STATE_ENTITIES_BY_FRIDGE_ID, fridgeStateID);
     }
 }
