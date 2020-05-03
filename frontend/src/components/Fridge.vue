@@ -4,7 +4,7 @@
     <b-button-group class="btns">
       <b-button variant="info" v-b-modal.modal-2>Zmień nazwę</b-button>
       <b-button variant="danger" @click="deleteFridge()">Usuń</b-button>
-      <b-button variant="success">Generuj listę</b-button>
+      <b-button v-if="fridge.products.length > 0 " variant="success" @click="generate()">Generuj listę</b-button>
     </b-button-group>
 
     <table class="table">
@@ -39,10 +39,16 @@
           <label for="select">Wybierz z listy</label>
           <select class="form-control" @change="selected()" v-model="selectedProduct.id">
             <option :value="0">-----</option>
-            <option v-for="item of proposedItems" :key="item.productName" :value="item.productID">{{item.productName}}</option>
+            <option
+              v-for="item of proposedItems"
+              :key="item.productName"
+              :value="item.productID"
+            >{{item.productName}}</option>
           </select>
         </div>
-        <p v-if="showNew && !hideSelect" style="text-align: center"><b>Lub stwórz nowy</b></p>
+        <p v-if="showNew && !hideSelect" style="text-align: center">
+          <b>Lub stwórz nowy</b>
+        </p>
         <div class="form-group" v-if="showNew">
           <label for="exampleInputEmail1">Nazwa produktu</label>
           <input type="text" v-model="product.productName" class="form-control" id="name" />
@@ -67,13 +73,15 @@
           type="button"
           @click="saveProduct()"
           v-b-modal.modal-1
-          class="btn btn-success" v-if="showNew"
+          class="btn btn-success"
+          v-if="showNew"
         >Zapisz</button>
         <button
           type="button"
           @click="saveSelectedProduct()"
           v-b-modal.modal-1
-          class="btn btn-success" v-if="!showNew"
+          class="btn btn-success"
+          v-if="!showNew"
         >Zapisz</button>
         <button
           type="button"
@@ -117,8 +125,8 @@ export default {
       newName: "",
       proposedItems: [],
       selectedProduct: {
-          id: 0,
-          amount: 0
+        id: 0,
+        amount: 0
       },
       showNew: true,
       hideSelect: false
@@ -152,7 +160,7 @@ export default {
         });
     },
     setProduct(product) {
-    this.showNew = true;
+      this.showNew = true;
       if (product == null) {
         this.hideSelect = false;
         this.product.productName = "";
@@ -252,29 +260,41 @@ export default {
         });
     },
     selected() {
-        if(this.selectedProduct.id == 0) {
-            this.showNew = true;
-        } else {
-            this.showNew = false;
-        }
+      if (this.selectedProduct.id == 0) {
+        this.showNew = true;
+      } else {
+        this.showNew = false;
+      }
     },
     saveSelectedProduct() {
-        this.axios
-          .post(
-            `http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products`,
-            {
-              productID: this.selectedProduct.id,
-              amount: this.selectedProduct.amount
-            }
-          )
-          .then(() => {
-            this.$refs["my-modal"].hide();
-            toast.success("Dodano produkt", "Sukces");
-            this.getFridge();
-          })
-          .catch(function() {
-            toast.error("Nie udało się dodać produktu", "Błąd");
-          });
+      this.axios
+        .post(
+          `http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products`,
+          {
+            productID: this.selectedProduct.id,
+            amount: this.selectedProduct.amount
+          }
+        )
+        .then(() => {
+          this.$refs["my-modal"].hide();
+          toast.success("Dodano produkt", "Sukces");
+          this.getFridge();
+        })
+        .catch(function() {
+          toast.error("Ten produkt jest już na liście", "Błąd");
+        });
+    },
+    generate() {
+      this.axios
+        .post(
+          `http://localhost:8100/fridges/${this.fridge.fridgeStateID}/generatelist`)
+        .then(() => {
+          toast.success("Wygenerowano listę zakupów", "Sukces");
+          this.$router.push("/lists");
+        })
+        .catch(function() {
+          toast.error("Posiadasz wszystkie produkty", "Błąd");
+        });
     }
   }
 };
