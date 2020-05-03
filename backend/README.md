@@ -19,5 +19,11 @@
 
 ### Start application backend
 ```
+use "mvn clean install" in "/backend" directory
+
 run configuration from MyShopperApplication.java
+
+or
+
+mvn spring-boot:run in "/backend" directory
 ```
