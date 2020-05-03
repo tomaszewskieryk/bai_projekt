@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <h1 class="title">Zaktualizuj stan swojej lodówki</h1>
     <table class="table">
       <thead>
         <tr>
@@ -165,6 +166,10 @@ export default {
  .delete {
    clear: both;
    float: right;
+ }
+ .title {
+   text-align: center;
+   margin-bottom: 10px;
  }
 @media (min-width: 1000px) {
   .main {

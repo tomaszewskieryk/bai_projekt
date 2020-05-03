@@ -6,11 +6,15 @@ import Login from './components/Login.vue';
 import Home from './components/Home.vue';
 import NavBar from './components/NavBar.vue';
 import ActualFridge from './components/ActualFridge.vue';
+import FridgesList from './components/FridgesList.vue';
+import Fridge from './components/Fridge.vue';
+import Lists from './components/Lists.vue';
+import SingleList from './components/SingleList.vue';
 import { BootstrapVue } from 'bootstrap-vue';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faHome, faSignInAlt, faUserPlus, faBook } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faSignInAlt, faUserPlus, faBook, faArrowCircleRight, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -21,7 +25,7 @@ Vue.use(BootstrapVue);
 Vue.use(VueAxios, axios);
 
 //font awesome icons
-library.add(faHome, faSignInAlt, faUserPlus, faBook);
+library.add(faHome, faSignInAlt, faUserPlus, faBook, faArrowCircleRight, faClipboardList);
 
 Vue.component('navbar', NavBar);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
@@ -31,6 +35,10 @@ const routes = [
     {path: '/register', component: Register},
     {path: '/login', component: Login},
     {path: '/actual', component: ActualFridge},
+    {path: '/fridges', component: FridgesList},
+    {path: '/fridge/:id', component: Fridge},
+    {path: '/lists', component: Lists},
+    {path: '/list/:id', component: SingleList},
     {path: '/', component: Home},
     {path: '*', component: Home}
 ];
