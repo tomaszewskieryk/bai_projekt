@@ -1,6 +1,7 @@
 package com.example.myshopper.repository;
 
 import com.example.myshopper.repository.model.ProductEntity;
+import com.example.myshopper.repository.model.ProductShoppingListEntity;
 import com.example.myshopper.repository.model.ProductStateEntity;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,9 @@ import java.util.Map;
 @Repository
 public class ProductRepository {
 
-    private static final String PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID = "getProductStateEntityListByStateID";
-    private static final String PRODUCT_LIST_BY_IDS = "getProductListByIDs";
+    private static final String GET_PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID = "getProductStateEntityListByStateID";
+    private static final String GET_PRODUCT_LIST_BY_IDS = "getProductListByIDs";
+    private static final String GET_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID = "getProductShoppingListEntitiesByListID";
 
     private static final String CREATE_PRODUCT_ENTITY = "createProductEntity";
     private static final String CREATE_PRODUCT_STATE_ENTITY = "createProductStateEntity";
@@ -34,11 +36,15 @@ public class ProductRepository {
     }
 
     public List<ProductStateEntity> getProductStateEntitiesByStateID(int fridgeStateID) {
-        return sqlSession.selectList(PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID, fridgeStateID);
+        return sqlSession.selectList(GET_PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID, fridgeStateID);
     }
 
     public List<ProductEntity> getProductListByIDs(List<Integer> productIDs) {
-        return sqlSession.<ProductEntity>selectList(PRODUCT_LIST_BY_IDS, productIDs);
+        return sqlSession.<ProductEntity>selectList(GET_PRODUCT_LIST_BY_IDS, productIDs);
+    }
+
+    public List<ProductShoppingListEntity> getProductShoppingListEntitiesByListID(int shoppingListID) {
+        return sqlSession.<ProductShoppingListEntity>selectList(GET_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID, shoppingListID);
     }
 
     public int createProductEntity(ProductEntity product) {

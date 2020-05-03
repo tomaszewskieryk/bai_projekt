@@ -16,6 +16,12 @@
         <result column="price" property="price"/>
     </resultMap>
 
+    <resultMap id="productShoppingListEntityResult" type="com.example.myshopper.repository.model.ProductShoppingListEntity">
+        <id column="shopping_list_id" property="shoppingListID"/>
+        <id column="product_id" property="productID"/>
+        <result column="amount" property="amount"/>
+    </resultMap>
+
     <select id="getProductStateEntityListByStateID" resultMap="productStateEntityResult">
         select * from product_fridge_state
         where fridge_state_id = #{fridgeStateID}
@@ -27,6 +33,11 @@
         <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
                     #{item}
         </foreach>
+    </select>
+
+    <select id="getProductShoppingListEntitiesByListID" resultMap="productShoppingListEntityResult">
+        select * from product_shopping_list
+        where shopping_list_id = #{shoppingListID}
     </select>
 
     <insert id="createProductEntity" useGeneratedKeys="true">

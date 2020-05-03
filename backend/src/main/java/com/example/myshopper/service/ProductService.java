@@ -3,12 +3,13 @@ package com.example.myshopper.service;
 import com.example.myshopper.exception.InputException;
 import com.example.myshopper.model.CountedProduct;
 import com.example.myshopper.model.Product;
-import com.example.myshopper.model.enums.Unit;
 import com.example.myshopper.repository.FridgeStateRepository;
 import com.example.myshopper.repository.ProductRepository;
 import com.example.myshopper.repository.model.FridgeStateEntity;
 import com.example.myshopper.repository.model.ProductEntity;
+import com.example.myshopper.repository.model.ProductShoppingListEntity;
 import com.example.myshopper.repository.model.ProductStateEntity;
+import com.example.myshopper.transformer.ProductTransformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,29 +26,31 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final FridgeStateRepository fridgeStateRepository;
+    private final ProductTransformer productTransformer;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, FridgeStateRepository fridgeStateRepository) {
+    public ProductService(ProductRepository productRepository, FridgeStateRepository fridgeStateRepository, ProductTransformer productTransformer) {
         this.productRepository = productRepository;
         this.fridgeStateRepository = fridgeStateRepository;
+        this.productTransformer = productTransformer;
     }
 
-    public List<CountedProduct> getCountedProductsByStateID(int fridgeStateID) {
+    public List<CountedProduct> getCountedProductsByFridgeStateID(int fridgeStateID) {
         List<ProductStateEntity> productStateEntities = productRepository.getProductStateEntitiesByStateID(fridgeStateID);
         if (productStateEntities.isEmpty()) {
-            log.info("Could not find any product_fridge state entities for stateID=" + fridgeStateID);
+            log.info("Could not find any productFridgeStateEntities for fridgeStateID=" + fridgeStateID);
             return Collections.emptyList();
         }
-        Map<String, Integer> productsAmountMap = getProductsAmountMap(productStateEntities);
-        List<Integer> productIDs = getProductIds(productStateEntities);
+        Map<String, Integer> productsAmountMap = getProductsAmountInFridgeStateMap(productStateEntities);
+        List<Integer> productIDs = getProductIdsFromProductStateEntities(productStateEntities);
 
         List<ProductEntity> productEntities = productRepository.getProductListByIDs(productIDs);
-        List<Product> products = transformToProducts(productEntities);
+        List<Product> products = productTransformer.transformToProducts(productEntities);
         return mergeProductsWithItsAmounts(products, productsAmountMap);
     }
 
     public void createProductForFridgeState(int fridgeStateID, CountedProduct product) {
-        ProductEntity productEntity = transformToProductEntity(product);
+        ProductEntity productEntity = productTransformer.transformToProductEntity(product);
         int productID = productRepository.createProductEntity(productEntity);
 
         saveProductStateEntity(fridgeStateID, productID, product.getAmount());
@@ -58,26 +61,44 @@ public class ProductService {
     }
 
     public void updateProduct(CountedProduct product, int fridgeStateID) {
-        ProductEntity productEntity = transformToProductEntity(product);
+        ProductEntity productEntity = productTransformer.transformToProductEntity(product);
         productRepository.updateProductEntity(productEntity);
-
-        ProductStateEntity productStateEntity = transformToProductStateEntity(fridgeStateID, product);
+        ProductStateEntity productStateEntity = productTransformer.transformToProductStateEntity(fridgeStateID, product);
 
         productRepository.updateProductStateEntity(productStateEntity);
     }
 
-    private void saveProductStateEntity(int fridgeStateID, int productID, int amount) {
-        ProductStateEntity productActualStateEntity = transformToProductStateEntity(fridgeStateID, productID, amount);
+    public List<CountedProduct> getCountedProductsByShoppingListID(int shoppingListID) {
+        List<ProductShoppingListEntity> productShoppingListEntities = productRepository.getProductShoppingListEntitiesByListID(shoppingListID);
+        if (productShoppingListEntities.isEmpty()) {
+            log.info("Could not find any productShoppingListEntities for shoppingListID=" + shoppingListID);
+            return Collections.emptyList();
+        }
+        Map<String, Integer> productsAmountMap = getProductsAmountInShoppingListMap(productShoppingListEntities);
+        List<Integer> productIDs = getProductIdsFromProductShoppingListEntities(productShoppingListEntities);
 
-        productRepository.saveNewProductStateEntity(productActualStateEntity);
+        List<ProductEntity> productEntities = productRepository.getProductListByIDs(productIDs);
+        List<Product> products = productTransformer.transformToProducts(productEntities);
+        return mergeProductsWithItsAmounts(products, productsAmountMap);
     }
 
-    private ProductStateEntity transformToProductStateEntity(int fridgeStateID, int productID, int amount) {
-        return ProductStateEntity.builder()
-                .fridgeStateID(fridgeStateID)
-                .productID(productID)
-                .amount(amount)
-                .build();
+    private List<Integer> getProductIdsFromProductShoppingListEntities(List<ProductShoppingListEntity> productShoppingListEntities) {
+        return productShoppingListEntities.stream()
+                .map(ProductShoppingListEntity::getProductID)
+                .collect(Collectors.toList());
+    }
+
+    private Map<String, Integer> getProductsAmountInShoppingListMap(List<ProductShoppingListEntity> productShoppingListEntities) {
+        Map<String, Integer> productsAmountMap = new HashMap<>();
+        productShoppingListEntities
+                .forEach(productShoppingListEntity -> insertProductAmountToMap(productsAmountMap, productShoppingListEntity));
+        return productsAmountMap;
+    }
+
+    private void saveProductStateEntity(int fridgeStateID, int productID, int amount) {
+        ProductStateEntity productActualStateEntity = productTransformer.transformToProductStateEntity(fridgeStateID, productID, amount);
+
+        productRepository.saveNewProductStateEntity(productActualStateEntity);
     }
 
     private int getActualFridgeStateID(int fridgeStateID) {
@@ -100,22 +121,7 @@ public class ProductService {
                 .orElseThrow(() -> new InputException("There is no fridge state with id=" + fridgeStateID));
     }
 
-    private List<Product> transformToProducts(List<ProductEntity> productEntities) {
-        return productEntities.stream()
-                .map(this::transformToProduct)
-                .collect(Collectors.toList());
-    }
-
-    private Product transformToProduct(ProductEntity pe) {
-        return Product.builder()
-                .productID(pe.getProductID())
-                .productName(pe.getProductName())
-                .price(pe.getPrice())
-                .unit(Unit.valueOf(pe.getUnit()))
-                .build();
-    }
-
-    private Map<String, Integer> getProductsAmountMap(List<ProductStateEntity> productStateEntities) {
+    private Map<String, Integer> getProductsAmountInFridgeStateMap(List<ProductStateEntity> productStateEntities) {
         Map<String, Integer> productsAmountMap = new HashMap<>();
         productStateEntities
                 .forEach(productStateEntity -> insertProductAmountToMap(productsAmountMap, productStateEntity));
@@ -126,7 +132,11 @@ public class ProductService {
         productsAmountMap.put(String.valueOf(productStateEntity.getProductID()), productStateEntity.getAmount());
     }
 
-    private List<Integer> getProductIds(List<ProductStateEntity> productStateEntities) {
+    private void insertProductAmountToMap(Map<String, Integer> productsAmountMap, ProductShoppingListEntity productStateEntity) {
+        productsAmountMap.put(String.valueOf(productStateEntity.getProductID()), productStateEntity.getAmount());
+    }
+
+    private List<Integer> getProductIdsFromProductStateEntities(List<ProductStateEntity> productStateEntities) {
         return productStateEntities.stream()
                 .map(ProductStateEntity::getProductID)
                 .collect(Collectors.toList());
@@ -142,22 +152,6 @@ public class ProductService {
         return new CountedProduct(product, productsAmountMap.get(String.valueOf(product.getProductID())));
     }
 
-    private ProductEntity transformToProductEntity(CountedProduct product) {
-        return ProductEntity.builder()
-                .productID(product.getProductID())
-                .price(product.getPrice())
-                .productName(product.getProductName())
-                .unit(product.getUnit().toString())
-                .build();
-    }
-
-    private ProductStateEntity transformToProductStateEntity(int fridgeStateID, CountedProduct product) {
-        return ProductStateEntity.builder()
-                .fridgeStateID(fridgeStateID)
-                .productID(product.getProductID())
-                .amount(product.getAmount())
-                .build();
-    }
 
     public void deleteProductFromFridge(int fridgeStateID, int productID) {
         if (checkIfStateIsActual(fridgeStateID)) {
