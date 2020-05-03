@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import toast from '../resources/toast'
+import toast from "../resources/toast";
 
 export default {
   data() {
@@ -38,6 +38,11 @@ export default {
         password: ""
       }
     };
+  },
+  mounted() {
+    if (localStorage.getItem("user") != null) {
+      this.$router.push("actual");
+    }
   },
   methods: {
     onSubmit(evt) {
@@ -50,7 +55,7 @@ export default {
         .then(response => {
           toast.success("Zalogowano pomyślnie", "Sukces!");
           localStorage.setItem("user", response.data.userID);
-          this.$router.push('actual');
+          window.location.reload();
         })
         .catch(function() {
           toast.error("Nie udało się zalogować", "Błąd!");
