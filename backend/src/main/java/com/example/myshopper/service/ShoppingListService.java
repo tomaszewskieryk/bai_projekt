@@ -97,4 +97,17 @@ public class ShoppingListService {
                 .map(shoppingListTransformer::transformToShoppingList)
                 .collect(Collectors.toList());
     }
+
+    public ShoppingList getShoppingListByID(int shoppingListID) {
+        ShoppingListEntity shoppingListEntity = shoppingListRepository.getShoppingListEntitiesByID(shoppingListID)
+                .orElseThrow(() -> new InputException("Could not find any shoppingList with shoppingListID=" + shoppingListID));
+        return shoppingListTransformer.transformToShoppingList(shoppingListEntity);
+    }
+
+    public void deleteShoppingList(int shoppingListID) {
+            shoppingListRepository.deleteAllShoppingListConnections(shoppingListID);
+            log.info("Deleted productShoppingListEntity with shoppingListID=" + shoppingListID);
+            shoppingListRepository.deleteShippingListEntity(shoppingListID);
+            log.info("Deleted shoppingList with shoppingListID=" + shoppingListID);
+        }
 }

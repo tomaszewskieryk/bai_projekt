@@ -170,6 +170,11 @@ public class ProductService {
 
     private void deleteFridgeProductConnection(int fridgeStateID, int productID) {
         productRepository.deleteProductStateEntity(fridgeStateID, productID);
-        log.info("Deleted product_state entity with productID=" + productID + " and fridgeStateID=" + fridgeStateID);
+        log.info("Deleted productStateEntity with productID=" + productID + " and fridgeStateID=" + fridgeStateID);
+    }
+
+    public void deleteProductFromShoppingList(int shoppingListID, int productID) {
+        productRepository.deleteProductShoppingListEntity(shoppingListID, productID);
+        log.info("Deleted productShoppingListEntity with productID=" + productID + " and shoppingListID=" + shoppingListID);
     }
 }

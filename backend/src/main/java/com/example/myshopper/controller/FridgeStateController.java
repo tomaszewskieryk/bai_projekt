@@ -12,8 +12,8 @@ import java.util.List;
 @RestController()
 public class FridgeStateController {
 
-    FridgeStateService fridgeStateService;
-    UserService userService;
+    private final FridgeStateService fridgeStateService;
+    private final UserService userService;
 
     @Autowired
     public FridgeStateController(FridgeStateService fridgeStateService, UserService userService) {

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ShoppingListRepository {
@@ -15,6 +16,10 @@ public class ShoppingListRepository {
     private static final String CREATE_PRODUCT_SHOPPING_LIST_ENTITIES = "createProductShoppingListEntities";
 
     private static final String GET_SHOPPING_LIST_ENTITIES_BY_USER_ID = "getShoppingListEntitiesByUserID";
+    private static final String GET_SHOPPING_LIST_BY_ID = "getShoppingListEntitiesByID";
+    private static final String DELETE_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID = "deleteProductShoppingListEntitiesByListID";
+    private static final String DELETE_SHOPPING_LIST_ENTITIES_BY_LIST_ID = "deleteShoppingListEntitiesByListID";
+
 
     private final SqlSession sqlSession;
 
@@ -33,7 +38,18 @@ public class ShoppingListRepository {
     }
 
     public List<ShoppingListEntity> getShoppingListEntitiesByUserID(int userID) {
-        return sqlSession.<ShoppingListEntity>selectList(GET_SHOPPING_LIST_ENTITIES_BY_USER_ID, userID);
+        return sqlSession.selectList(GET_SHOPPING_LIST_ENTITIES_BY_USER_ID, userID);
     }
 
+    public Optional<ShoppingListEntity> getShoppingListEntitiesByID(int shoppingListID) {
+        return Optional.ofNullable(sqlSession.selectOne(GET_SHOPPING_LIST_BY_ID, shoppingListID));
+    }
+
+    public void deleteAllShoppingListConnections(int shoppingListID) {
+        sqlSession.delete(DELETE_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID, shoppingListID);
+    }
+
+    public void deleteShippingListEntity(int shoppingListID) {
+        sqlSession.delete(DELETE_SHOPPING_LIST_ENTITIES_BY_LIST_ID, shoppingListID);
+    }
 }

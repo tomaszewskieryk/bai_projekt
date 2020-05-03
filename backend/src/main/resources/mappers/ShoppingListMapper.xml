@@ -36,4 +36,19 @@
         where user_id = #{userID}
     </select>
 
+    <select id="getShoppingListEntitiesByID" resultMap="shoppingListResult">
+        select * from shopping_lists
+        where shopping_list_id = #{shoppingListID}
+    </select>
+
+    <delete id="deleteProductShoppingListEntitiesByListID">
+        delete from product_shopping_list
+        where shopping_list_id = #{shoppingListID}
+    </delete>
+
+    <delete id="deleteShoppingListEntitiesByListID">
+        delete from shopping_lists
+        where shopping_list_id = #{shoppingListID}
+    </delete>
+
 </mapper>

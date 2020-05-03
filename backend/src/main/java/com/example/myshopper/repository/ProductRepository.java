@@ -26,6 +26,7 @@ public class ProductRepository {
 
     private static final String DELETE_PRODUCT_ENTITY = "deleteProductEntity";
     private static final String DELETE_PRODUCT_STATE_ENTITY = "deleteProductStateEntity";
+    private static final String DELETE_PRODUCT_SHOPPING_LIST_ENTITY = "deleteProductShoppingListEntity";
     private static final String DELETE_PRODUCT_STATE_ENTITIES = "deleteProductStateEntities";
 
     private final SqlSession sqlSession;
@@ -40,11 +41,11 @@ public class ProductRepository {
     }
 
     public List<ProductEntity> getProductListByIDs(List<Integer> productIDs) {
-        return sqlSession.<ProductEntity>selectList(GET_PRODUCT_LIST_BY_IDS, productIDs);
+        return sqlSession.selectList(GET_PRODUCT_LIST_BY_IDS, productIDs);
     }
 
     public List<ProductShoppingListEntity> getProductShoppingListEntitiesByListID(int shoppingListID) {
-        return sqlSession.<ProductShoppingListEntity>selectList(GET_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID, shoppingListID);
+        return sqlSession.selectList(GET_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID, shoppingListID);
     }
 
     public int createProductEntity(ProductEntity product) {
@@ -72,11 +73,17 @@ public class ProductRepository {
         Map<String, Integer> params = new HashMap<>();
         params.put("fridgeStateID", fridgeStateID);
         params.put("productID", productID);
-
         sqlSession.delete(DELETE_PRODUCT_STATE_ENTITY, params);
     }
 
     public void deleteAllProductStateEntities(int productID) {
         sqlSession.delete(DELETE_PRODUCT_STATE_ENTITIES, productID);
+    }
+
+    public void deleteProductShoppingListEntity(int shoppingListID, int productID) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("shoppingListID", shoppingListID);
+        params.put("productID", productID);
+        sqlSession.delete(DELETE_PRODUCT_SHOPPING_LIST_ENTITY, params);
     }
 }

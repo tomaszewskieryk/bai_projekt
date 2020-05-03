@@ -3,10 +3,7 @@ package com.example.myshopper.controller;
 import com.example.myshopper.model.ShoppingList;
 import com.example.myshopper.service.ShoppingListService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +25,15 @@ public class ShoppingListController {
     @GetMapping("/users/{userID}/lists")
     public List<ShoppingList> getShoppingListsForUser(@PathVariable int userID){
         return shoppingListService.getShoppingListsForUser(userID);
+    }
+
+    @GetMapping("/lists/{shoppingListID}")
+    public ShoppingList getShoppingListByID(@PathVariable int shoppingListID){
+        return shoppingListService.getShoppingListByID(shoppingListID);
+    }
+
+    @DeleteMapping("/lists/{shoppingListID}")
+    public void deleteShoppingListByID(@PathVariable int shoppingListID){
+        shoppingListService.deleteShoppingList(shoppingListID);
     }
 }

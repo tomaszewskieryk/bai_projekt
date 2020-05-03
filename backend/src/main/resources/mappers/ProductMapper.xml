@@ -79,6 +79,12 @@
         and fridge_state_id = #{fridgeStateID}
     </delete>
 
+    <delete id="deleteProductShoppingListEntity">
+        delete from product_shopping_list
+        where product_id = #{productID}
+        and shopping_list_id = #{shoppingListID}
+    </delete>
+
     <delete id="deleteProductStateEntities">
         delete from product_fridge_state
         where product_id = #{productID}

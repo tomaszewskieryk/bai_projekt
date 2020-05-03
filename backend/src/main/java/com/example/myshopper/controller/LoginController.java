@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController()
 public class LoginController {
 
-    UserService userService;
+    private final UserService userService;
 
     @Autowired
     public LoginController(UserService userService) {
