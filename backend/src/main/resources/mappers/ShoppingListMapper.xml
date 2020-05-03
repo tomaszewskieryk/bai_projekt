@@ -23,10 +23,10 @@
         </selectKey>
     </insert>
 
-    <insert id="createProductShoppingListEntities">
+    <insert id="createProductShoppingListEntities" parameterType="list">
         insert into product_shopping_list (shopping_list_id, product_id, amount)
         values
-        <foreach collection="list" item="element" index="index" open="(" separator=","  close=")">
+        <foreach collection="list" item="element" index="index" open="(" separator="),("  close=")">
             #{element.shoppingListID}, #{element.productID}, #{element.amount}
         </foreach>
     </insert>
