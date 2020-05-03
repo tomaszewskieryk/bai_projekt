@@ -6,22 +6,22 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="/" v-if="user != null">
-            <font-awesome-icon icon="home" />Strona główna
+            <font-awesome-icon icon="home" /> Strona główna
           </b-nav-item>
           <b-nav-item href="/login" v-if="user == null">
-            <font-awesome-icon icon="sign-in-alt" />Logowanie
+            <font-awesome-icon icon="sign-in-alt" /> Logowanie
           </b-nav-item>
           <b-nav-item href="/register" v-if="user == null">
-            <font-awesome-icon icon="user-plus" />Rejestracja
+            <font-awesome-icon icon="user-plus" /> Rejestracja
           </b-nav-item>
           <b-nav-item href="/actual" v-if="user != null">
-            <font-awesome-icon icon="book" />Stan lodówki
+            <font-awesome-icon icon="book" /> Stan lodówki
           </b-nav-item>
           <b-nav-item href="/fridges" v-if="user != null">
-            <font-awesome-icon icon="arrow-circle-right" />Stwórz listę
+            <font-awesome-icon icon="arrow-circle-right" /> Stwórz listę
           </b-nav-item>
           <b-nav-item href="/lists" v-if="user != null">
-            <font-awesome-icon icon="clipboard-list" />Aktualne listy zakupów
+            <font-awesome-icon icon="clipboard-list" /> Aktualne listy zakupów
           </b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav class="ml-auto" v-if="user != null">

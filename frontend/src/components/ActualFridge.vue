@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <h1 class="title">Zaktualizuj stan swojej lodówki</h1>
+    <h1 class="title">Dobrze trafiłeś! Zaktualizuj stan swojej <font color="#CD5C5C">lodówki</font></h1>
     <table class="table">
       <thead>
         <tr>
@@ -168,9 +168,13 @@ export default {
    float: right;
  }
  .title {
-   text-align: center;
-   margin-bottom: 10px;
- }
+     color: #2F4F4F;
+     font-size: 30px;
+     font-family: Tahoma, Verdana, Segoe, sans-serif;
+     margin-bottom: 10px;
+     text-align: center;
+     }
+
 @media (min-width: 1000px) {
   .main {
     width: 60%;
