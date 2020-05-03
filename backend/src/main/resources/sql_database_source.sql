@@ -21,7 +21,7 @@ CREATE TABLE products (
                        product_id       INT PRIMARY KEY AUTO_INCREMENT,
                        unit             VARCHAR(2),
                        product_name     VARCHAR(50) NOT NULL,
-                       price           DECIMAL(10,2) NOT NULL
+                       price            DECIMAL(10,2) NOT NULL
 );
 
 CREATE TABLE shopping_lists (
@@ -33,7 +33,7 @@ CREATE TABLE shopping_lists (
 CREATE TABLE product_fridge_state (
   fridge_state_id  INT,
   product_id       INT,
-  amount           INT,
+  amount           DECIMAL(10,2),
   CONSTRAINT pk_product_fridge_state PRIMARY KEY (fridge_state_id, product_id),
   CONSTRAINT fk_fridge_state FOREIGN KEY (fridge_state_id) REFERENCES fridge_states (fridge_state_id),
   CONSTRAINT fk_product_fridge_state FOREIGN KEY (product_id) REFERENCES products (product_id)
@@ -42,7 +42,7 @@ CREATE TABLE product_fridge_state (
 CREATE TABLE product_shopping_list (
   shopping_list_id  INT,
   product_id        INT,
-  amount            INT,
+  amount            DECIMAL(10,2),
   CONSTRAINT pk_product_shopping_list PRIMARY KEY (shopping_list_id, product_id),
   CONSTRAINT fk_product_shopping_list FOREIGN KEY (product_id) REFERENCES products (product_id),
   CONSTRAINT fk_shopping_list FOREIGN KEY (shopping_list_id) REFERENCES shopping_lists (shopping_list_id)

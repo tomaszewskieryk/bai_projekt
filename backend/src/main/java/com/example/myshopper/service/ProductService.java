@@ -41,7 +41,7 @@ public class ProductService {
             log.info("Could not find any productFridgeStateEntities for fridgeStateID=" + fridgeStateID);
             return Collections.emptyList();
         }
-        Map<String, Integer> productsAmountMap = getProductsAmountInFridgeStateMap(productStateEntities);
+        Map<String, Double> productsAmountMap = getProductsAmountInFridgeStateMap(productStateEntities);
         List<Integer> productIDs = getProductIdsFromProductStateEntities(productStateEntities);
 
         List<ProductEntity> productEntities = productRepository.getProductListByIDs(productIDs);
@@ -74,7 +74,7 @@ public class ProductService {
             log.info("Could not find any productShoppingListEntities for shoppingListID=" + shoppingListID);
             return Collections.emptyList();
         }
-        Map<String, Integer> productsAmountMap = getProductsAmountInShoppingListMap(productShoppingListEntities);
+        Map<String, Double> productsAmountMap = getProductsAmountInShoppingListMap(productShoppingListEntities);
         List<Integer> productIDs = getProductIdsFromProductShoppingListEntities(productShoppingListEntities);
 
         List<ProductEntity> productEntities = productRepository.getProductListByIDs(productIDs);
@@ -88,14 +88,14 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    private Map<String, Integer> getProductsAmountInShoppingListMap(List<ProductShoppingListEntity> productShoppingListEntities) {
-        Map<String, Integer> productsAmountMap = new HashMap<>();
+    private Map<String, Double> getProductsAmountInShoppingListMap(List<ProductShoppingListEntity> productShoppingListEntities) {
+        Map<String, Double> productsAmountMap = new HashMap<>();
         productShoppingListEntities
                 .forEach(productShoppingListEntity -> insertProductAmountToMap(productsAmountMap, productShoppingListEntity));
         return productsAmountMap;
     }
 
-    private void saveProductStateEntity(int fridgeStateID, int productID, int amount) {
+    private void saveProductStateEntity(int fridgeStateID, int productID, double amount) {
         ProductStateEntity productActualStateEntity = productTransformer.transformToProductStateEntity(fridgeStateID, productID, amount);
 
         productRepository.saveNewProductStateEntity(productActualStateEntity);
@@ -121,18 +121,18 @@ public class ProductService {
                 .orElseThrow(() -> new InputException("There is no fridge state with id=" + fridgeStateID));
     }
 
-    private Map<String, Integer> getProductsAmountInFridgeStateMap(List<ProductStateEntity> productStateEntities) {
-        Map<String, Integer> productsAmountMap = new HashMap<>();
+    private Map<String, Double> getProductsAmountInFridgeStateMap(List<ProductStateEntity> productStateEntities) {
+        Map<String, Double> productsAmountMap = new HashMap<>();
         productStateEntities
                 .forEach(productStateEntity -> insertProductAmountToMap(productsAmountMap, productStateEntity));
         return productsAmountMap;
     }
 
-    private void insertProductAmountToMap(Map<String, Integer> productsAmountMap, ProductStateEntity productStateEntity) {
+    private void insertProductAmountToMap(Map<String, Double> productsAmountMap, ProductStateEntity productStateEntity) {
         productsAmountMap.put(String.valueOf(productStateEntity.getProductID()), productStateEntity.getAmount());
     }
 
-    private void insertProductAmountToMap(Map<String, Integer> productsAmountMap, ProductShoppingListEntity productStateEntity) {
+    private void insertProductAmountToMap(Map<String, Double> productsAmountMap, ProductShoppingListEntity productStateEntity) {
         productsAmountMap.put(String.valueOf(productStateEntity.getProductID()), productStateEntity.getAmount());
     }
 
@@ -142,13 +142,13 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    private List<CountedProduct> mergeProductsWithItsAmounts(List<Product> products, Map<String, Integer> productsAmountMap) {
+    private List<CountedProduct> mergeProductsWithItsAmounts(List<Product> products, Map<String, Double> productsAmountMap) {
         return products.stream()
                 .map(product -> createCountedProduct(productsAmountMap, product))
                 .collect(Collectors.toList());
     }
 
-    private CountedProduct createCountedProduct(Map<String, Integer> productsAmountMap, Product product) {
+    private CountedProduct createCountedProduct(Map<String, Double> productsAmountMap, Product product) {
         return new CountedProduct(product, productsAmountMap.get(String.valueOf(product.getProductID())));
     }
 

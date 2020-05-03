@@ -118,7 +118,7 @@ public class ShoppingListService {
         CountedProduct currentProduct = Optional.ofNullable(currentProductsMap.get(String.valueOf(targetProduct.getProductID())))
                 .orElseThrow(() -> new InternalException("Error during comparing products: no target product in actual fridgeState"));
 
-        int missingAmount = targetProduct.getAmount() - currentProduct.getAmount();
+        double missingAmount = targetProduct.getAmount() - currentProduct.getAmount();
         if (missingAmount > 0) {
             needed.add(new CountedProduct(currentProduct, missingAmount));
         }

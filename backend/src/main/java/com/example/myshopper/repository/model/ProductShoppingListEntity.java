@@ -13,5 +13,5 @@ public class ProductShoppingListEntity{
 
     private int productID;
     private int shoppingListID;
-    private int amount;
+    private double amount;
 }

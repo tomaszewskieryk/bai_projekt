@@ -64,7 +64,7 @@
         where fridge_state_id = #{fridgeStateID}
     </delete>
 
-    <delete id="deleteProductStateEntitiesByFridgeID">
+    <delete id="deleteAllProductShoppingListEntities">
         delete from product_fridge_state
         where fridge_state_id = #{fridgeStateID}
     </delete>

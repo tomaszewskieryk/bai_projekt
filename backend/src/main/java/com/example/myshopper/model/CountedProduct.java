@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CountedProduct extends Product{
 
-    int amount;
+    double amount;
 
-    public CountedProduct(Product product, int amount) {
+    public CountedProduct(Product product, double amount) {
         super(product.getProductID(), product.getProductName(), product.getUnit(), product.getPrice());
         this.amount = amount;
     }

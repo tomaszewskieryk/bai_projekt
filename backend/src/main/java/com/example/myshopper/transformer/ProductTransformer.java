@@ -28,7 +28,7 @@ public class ProductTransformer {
                 .build();
     }
     
-    public ProductStateEntity transformToProductStateEntity(int fridgeStateID, int productID, int amount) {
+    public ProductStateEntity transformToProductStateEntity(int fridgeStateID, int productID, double amount) {
         return ProductStateEntity.builder()
                 .fridgeStateID(fridgeStateID)
                 .productID(productID)
