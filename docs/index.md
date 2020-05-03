@@ -64,5 +64,7 @@ Framework ułatwiający definiowanie klas w języku Java. Kod powstały dzięki 
 ## Autorzy
 
 Izabela Stań
+
 Mateusz Ślusarczyk
+
 Eryk Tomaszewski
