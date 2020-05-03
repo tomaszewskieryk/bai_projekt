@@ -17,7 +17,6 @@
           <td>
             <b-button
               variant="success"
-              v-b-modal.modal-1
               @click="deleteProduct(product.productID)"
             >Kupione</b-button>
           </td>
