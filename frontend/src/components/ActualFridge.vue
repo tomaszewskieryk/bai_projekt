@@ -141,12 +141,7 @@ export default {
     },
     deleteProduct() {
         this.axios
-          .post(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products/${this.product.productID}`, {
-            productName: this.product.productName,
-            unit: this.product.unit,
-            price: this.product.price,
-            amount: this.product.amount
-          })
+          .delete(`http://localhost:8100/fridges/${this.fridge.fridgeStateID}/products/${this.product.productID}`)
           .then(() => {
             this.$refs['my-modal'].hide();
             toast.success("Usunięto produkt", "Sukces");
