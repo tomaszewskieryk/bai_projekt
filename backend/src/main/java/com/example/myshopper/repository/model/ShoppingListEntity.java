@@ -1,15 +1,17 @@
 package com.example.myshopper.repository.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductListEntity {
+@Builder
+public class ShoppingListEntity {
 
-    private int productID;
-    private int fridgeStateID;
-    private int amount;
+    private int shoppingListID;
+    private String shoppingListName;
+    private int userID;
 }

@@ -11,11 +11,20 @@ import java.util.Optional;
 @Repository
 public class FridgeStateRepository {
 
-    private static final String CREATE_STATE_FOR_NEW_USER = "createFridgeStateForNewUser";
     private static final String GET_STATE_BY_ID = "getFridgeStateByID";
     private static final String GET_STATES_BY_USER_ID = "getFridgeStatesByUserID";
+    private static final String GET_NOT_ACTUAL_STATES_BY_USER_ID = "getNotActualFridgeStatesByUserID";
     private static final String GET_ACTUAL_STATE_BY_USER_ID = "getActualFridgeStateByUserID";
     private static final String GET_IS_ACTUAL_BY_STATE_ID = "getIsActualByStateId";
+
+    private static final String CREATE_STATE_FOR_NEW_USER = "createFridgeStateForNewUser";
+    private static final String CREATE_FRIDGE_STATE_ENTITY = "createFridgeStateEntity";
+
+    private static final String UPDATE_FRIDGE_STATE_ENTITY = "updateFridgeStateEntity";
+
+    private static final String DELETE_STATE_ENTITY = "deleteFridgeStateEntity";
+    private static final String DELETE_PRODUCT_STATE_ENTITIES_BY_FRIDGE_ID = "deleteProductStateEntitiesByFridgeID";
+
 
     private final SqlSession sqlSession;
 
@@ -37,11 +46,32 @@ public class FridgeStateRepository {
         return sqlSession.selectList(GET_STATES_BY_USER_ID, userID);
     }
 
+    public List<FridgeStateEntity> getNotActualFridgeStatesEntitiesByUserID(int userID) {
+        return sqlSession.selectList(GET_NOT_ACTUAL_STATES_BY_USER_ID, userID);
+    }
+
     public Optional<FridgeStateEntity> getActualFridgeStateEntityByUserID(int userID) {
         return Optional.ofNullable(sqlSession.selectOne(GET_ACTUAL_STATE_BY_USER_ID, userID));
     }
 
     public Optional<Boolean> getFridgeIsActual(int fridgeStateID) {
         return Optional.ofNullable(sqlSession.selectOne(GET_IS_ACTUAL_BY_STATE_ID, fridgeStateID));
+    }
+
+    public int saveFridgeStateEntity(FridgeStateEntity fridgeStateEntity) {
+        sqlSession.insert(CREATE_FRIDGE_STATE_ENTITY, fridgeStateEntity);
+        return fridgeStateEntity.getFridgeStateID();
+    }
+
+    public void updateFridgeStateEntity(FridgeStateEntity fridgeStateEntity) {
+        sqlSession.update(UPDATE_FRIDGE_STATE_ENTITY, fridgeStateEntity);
+    }
+
+    public void deleteFridgeStateEntity(int fridgeStateID) {
+        sqlSession.update(DELETE_STATE_ENTITY, fridgeStateID);
+    }
+
+    public void deleteAllFridgeConnections(int fridgeStateID) {
+        sqlSession.update(DELETE_PRODUCT_STATE_ENTITIES_BY_FRIDGE_ID, fridgeStateID);
     }
 }

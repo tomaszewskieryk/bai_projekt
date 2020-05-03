@@ -26,7 +26,12 @@ public class ProductController {
     }
 
     @DeleteMapping("/fridges/{fridgeStateID}/products/{productID}")
-    public void deleteProduct(@PathVariable int fridgeStateID, @PathVariable int productID) {
+    public void deleteProductFromFridgeState(@PathVariable int fridgeStateID, @PathVariable int productID) {
         productService.deleteProductFromFridge(fridgeStateID, productID);
+    }
+
+    @DeleteMapping("/lists/{shoppingListID}/products/{productID}")
+    public void deleteProductFromShoppingList(@PathVariable int shoppingListID, @PathVariable int productID) {
+        productService.deleteProductFromShoppingList(shoppingListID, productID);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.myshopper.service;
 
+import com.example.myshopper.exception.InputException;
 import com.example.myshopper.model.User;
 import com.example.myshopper.repository.UserRepository;
 import com.example.myshopper.validator.UserValidator;
@@ -27,10 +28,11 @@ public class UserService {
     }
 
     public User getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email);
+        return userRepository.getUserByEmail(email)
+                .orElseThrow(() -> new InputException("Could not find user with email=" + email));
     }
 
-    public User getUserByID(int userID){
+    public User getUserByID(int userID) {
         return userRepository.getUserByID(userID);
     }
 

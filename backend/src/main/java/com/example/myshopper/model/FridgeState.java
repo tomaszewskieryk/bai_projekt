@@ -1,5 +1,7 @@
 package com.example.myshopper.model;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +19,8 @@ public class FridgeState {
     private int fridgeStateID;
     private String fridgeName;
     private boolean isActual;
+    @JsonInclude(Include.NON_NULL)
+    @Builder.Default
     private List<CountedProduct> products = new ArrayList<>();
 
     public FridgeState(String fridgeName, boolean isActual) {

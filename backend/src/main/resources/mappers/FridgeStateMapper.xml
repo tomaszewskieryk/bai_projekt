@@ -18,6 +18,14 @@
         </selectKey>
     </insert>
 
+    <insert id="createFridgeStateEntity" useGeneratedKeys="true">
+        insert into fridge_states (fridge_name, actual, user_id)
+        values (#{fridgeName}, #{isActual}, #{userID})
+        <selectKey resultType="Integer" keyProperty="fridgeStateID" order="AFTER">
+            SELECT LAST_INSERT_ID();
+        </selectKey>
+    </insert>
+
     <select id="getFridgeStateByID" parameterType="int" resultMap="fridgeStateResult">
         select * from fridge_states
         where fridge_state_id = #{fridgeStateID}
@@ -34,9 +42,31 @@
         where user_id = #{userID}
     </select>
 
+    <select id="getNotActualFridgeStatesByUserID" parameterType="int" resultMap="fridgeStateResult">
+        select * from fridge_states
+        where user_id = #{userID}
+        and actual = '0'
+    </select>
+
     <select id="getIsActualByStateId" parameterType="int" resultType="boolean">
         select actual from fridge_states
         where fridge_state_id = #{fridgeStateID}
     </select>
+
+    <update id="updateFridgeStateEntity">
+        update fridge_states set
+                            fridge_name = #{fridgeName}
+        where fridge_state_id = #{fridgeStateID}
+    </update>
+
+    <delete id="deleteFridgeStateEntity">
+        delete from fridge_states
+        where fridge_state_id = #{fridgeStateID}
+    </delete>
+
+    <delete id="deleteProductStateEntitiesByFridgeID">
+        delete from product_fridge_state
+        where fridge_state_id = #{fridgeStateID}
+    </delete>
 
 </mapper>

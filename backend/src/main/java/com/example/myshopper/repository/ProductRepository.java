@@ -1,6 +1,7 @@
 package com.example.myshopper.repository;
 
 import com.example.myshopper.repository.model.ProductEntity;
+import com.example.myshopper.repository.model.ProductShoppingListEntity;
 import com.example.myshopper.repository.model.ProductStateEntity;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,9 @@ import java.util.Map;
 @Repository
 public class ProductRepository {
 
-    private static final String PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID = "getProductStateEntityListByStateID";
-    private static final String PRODUCT_LIST_BY_IDS = "getProductListByIDs";
+    private static final String GET_PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID = "getProductStateEntityListByStateID";
+    private static final String GET_PRODUCT_LIST_BY_IDS = "getProductListByIDs";
+    private static final String GET_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID = "getProductShoppingListEntitiesByListID";
 
     private static final String CREATE_PRODUCT_ENTITY = "createProductEntity";
     private static final String CREATE_PRODUCT_STATE_ENTITY = "createProductStateEntity";
@@ -24,7 +26,9 @@ public class ProductRepository {
 
     private static final String DELETE_PRODUCT_ENTITY = "deleteProductEntity";
     private static final String DELETE_PRODUCT_STATE_ENTITY = "deleteProductStateEntity";
-    private static final String DELETE_PRODUCT_STATE_ENTITIES = "deleteProductStateEntities";
+    private static final String DELETE_PRODUCT_SHOPPING_LIST_ENTITY = "deleteProductShoppingListEntity";
+    private static final String DELETE_ALL_PRODUCT_STATE_ENTITIES = "deleteAllProductStateEntities";
+    private static final String DELETE_ALL_PRODUCT_SHOPPING_LIST_ENTITIES = "deleteAllProductShoppingListEntities";
 
     private final SqlSession sqlSession;
 
@@ -34,11 +38,15 @@ public class ProductRepository {
     }
 
     public List<ProductStateEntity> getProductStateEntitiesByStateID(int fridgeStateID) {
-        return sqlSession.selectList(PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID, fridgeStateID);
+        return sqlSession.selectList(GET_PRODUCT_STATE_ENTITY_LIST_BY_STATE_ID, fridgeStateID);
     }
 
     public List<ProductEntity> getProductListByIDs(List<Integer> productIDs) {
-        return sqlSession.<ProductEntity>selectList(PRODUCT_LIST_BY_IDS, productIDs);
+        return sqlSession.selectList(GET_PRODUCT_LIST_BY_IDS, productIDs);
+    }
+
+    public List<ProductShoppingListEntity> getProductShoppingListEntitiesByListID(int shoppingListID) {
+        return sqlSession.selectList(GET_PRODUCT_SHOPPING_LIST_ENTITIES_BY_LIST_ID, shoppingListID);
     }
 
     public int createProductEntity(ProductEntity product) {
@@ -66,11 +74,21 @@ public class ProductRepository {
         Map<String, Integer> params = new HashMap<>();
         params.put("fridgeStateID", fridgeStateID);
         params.put("productID", productID);
-
         sqlSession.delete(DELETE_PRODUCT_STATE_ENTITY, params);
     }
 
     public void deleteAllProductStateEntities(int productID) {
-        sqlSession.delete(DELETE_PRODUCT_STATE_ENTITIES, productID);
+        sqlSession.delete(DELETE_ALL_PRODUCT_STATE_ENTITIES, productID);
+    }
+
+    public void deleteProductShoppingListEntity(int shoppingListID, int productID) {
+        Map<String, Integer> params = new HashMap<>();
+        params.put("shoppingListID", shoppingListID);
+        params.put("productID", productID);
+        sqlSession.delete(DELETE_PRODUCT_SHOPPING_LIST_ENTITY, params);
+    }
+
+    public void deleteAllProductShoppingListEntities(int productID) {
+        sqlSession.delete(DELETE_ALL_PRODUCT_SHOPPING_LIST_ENTITIES, productID);
     }
 }
