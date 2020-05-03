@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+  <h1 class="headline">A tutaj stworzysz swoją <font color="#CD5C5C">listę zakupową</font>:</h1>
     <ul class="list-group">
       <li
         class="list-group-item"
@@ -72,6 +73,14 @@ export default {
 </script>
 
 <style scoped>
+
+.headline {
+    color: 	#2F4F4F;
+    font-size: 30px;
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+    text-align: center;
+}
+
 li {
   cursor: pointer;
   text-align: center;
