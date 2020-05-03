@@ -8,6 +8,7 @@ import com.example.myshopper.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +24,13 @@ public class ShoppingListTransformer {
 
 
     public ShoppingList transformToShoppingList(ShoppingListEntity shoppingListEntity) {
-        return ShoppingList.builder()
+        ShoppingList shoppingList = ShoppingList.builder()
                 .shoppingListID(shoppingListEntity.getShoppingListID())
                 .shoppingListName(shoppingListEntity.getShoppingListName())
                 .products(getCountedProducts(shoppingListEntity.getShoppingListID()))
                 .build();
+        shoppingList.setPrice(calculatePrice(shoppingList.getProducts()));
+        return shoppingList;
     }
 
     public ShoppingListEntity transformToShoppingListEntity(ShoppingList shoppingList, int userID) {
@@ -45,6 +48,14 @@ public class ShoppingListTransformer {
                         productShoppingListEntities.add(transformToProductShoppingListEntity(product, shoppingList.getShoppingListID()))
                 );
         return productShoppingListEntities;
+    }
+
+    private BigDecimal calculatePrice(List<CountedProduct> products) {
+        BigDecimal total = BigDecimal.ZERO;
+        for (CountedProduct product : products) {
+            total = total.add(product.getPrice().multiply(BigDecimal.valueOf(product.getAmount())));
+        }
+        return total;
     }
 
     private ProductShoppingListEntity transformToProductShoppingListEntity(CountedProduct product, int shoppingListID) {

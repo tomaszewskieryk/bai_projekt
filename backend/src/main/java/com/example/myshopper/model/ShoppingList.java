@@ -17,17 +17,8 @@ public class ShoppingList {
 
     private int shoppingListID;
     private String shoppingListName;
-    @Builder.Default
     List<CountedProduct> products = new ArrayList<>();
-    private BigDecimal price = calculatePrice();
-
-    private BigDecimal calculatePrice() {
-        BigDecimal total = BigDecimal.ZERO;
-        for (CountedProduct product : products) {
-            total = total.add(product.getPrice().multiply(BigDecimal.valueOf(product.getAmount())));
-        }
-        return total;
-    }
+    private BigDecimal price;
 
     public ShoppingList(String shoppingListName, List<CountedProduct> products) {
         this.shoppingListName = shoppingListName;

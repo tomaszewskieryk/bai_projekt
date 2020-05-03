@@ -20,7 +20,6 @@ public class FridgeState {
     private String fridgeName;
     private boolean isActual;
     @JsonInclude(Include.NON_NULL)
-    @Builder.Default
     private List<CountedProduct> products = new ArrayList<>();
 
     public FridgeState(String fridgeName, boolean isActual) {
