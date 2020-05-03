@@ -18,7 +18,7 @@
             <font-awesome-icon icon="book" /> Stan lodówki
           </b-nav-item>
           <b-nav-item href="/fridges" v-if="user != null">
-            <font-awesome-icon icon="arrow-circle-right" /> Stwórz listę
+            <font-awesome-icon icon="arrow-circle-right" /> Tworzenie list
           </b-nav-item>
           <b-nav-item href="/lists" v-if="user != null">
             <font-awesome-icon icon="clipboard-list" /> Aktualne listy zakupów
